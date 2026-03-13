@@ -1,0 +1,160 @@
+
+Google Colab Link:
+link: https://colab.research.google.com/drive/1QR25nw30MkL2XO8aYjC74dwkFqVifJbj?usp=sharing
+
+Data Augmentations:
+  -- HF: Horizontal flip
+  -- VF: Vertical flip
+  -- 90R: Rotation 90 degree
+
+
+Processed 10000 / 60000 images...
+Processed 20000 / 60000 images...
+Processed 30000 / 60000 images...
+Processed 40000 / 60000 images...
+Processed 50000 / 60000 images...
+Processed 60000 / 60000 images...
+✅ Augmented MNIST saved as 'augmented_mnist.npz'
+Epoch 1/100
+
+Epoch 1: val_loss improved from inf to 0.28502, saving model to best_mnist_model.keras
+1688/1688 - 18s - 11ms/step - accuracy: 0.8147 - loss: 0.5937 - val_accuracy: 0.9130 - val_loss: 0.2850 - learning_rate: 1.0000e-03
+Epoch 2/100
+
+Epoch 2: val_loss improved from 0.28502 to 0.22588, saving model to best_mnist_model.keras
+1688/1688 - 11s - 6ms/step - accuracy: 0.8939 - loss: 0.3461 - val_accuracy: 0.9315 - val_loss: 0.2259 - learning_rate: 1.0000e-03
+Epoch 3/100
+
+Epoch 3: val_loss improved from 0.22588 to 0.20527, saving model to best_mnist_model.keras
+1688/1688 - 4s - 3ms/step - accuracy: 0.9093 - loss: 0.2944 - val_accuracy: 0.9362 - val_loss: 0.2053 - learning_rate: 1.0000e-03
+Epoch 4/100
+
+Epoch 4: val_loss improved from 0.20527 to 0.18717, saving model to best_mnist_model.keras
+1688/1688 - 5s - 3ms/step - accuracy: 0.9179 - loss: 0.2663 - val_accuracy: 0.9413 - val_loss: 0.1872 - learning_rate: 1.0000e-03
+Epoch 5/100
+
+Epoch 5: val_loss improved from 0.18717 to 0.18042, saving model to best_mnist_model.keras
+1688/1688 - 5s - 3ms/step - accuracy: 0.9238 - loss: 0.2491 - val_accuracy: 0.9431 - val_loss: 0.1804 - learning_rate: 1.0000e-03
+Epoch 6/100
+
+Epoch 6: val_loss improved from 0.18042 to 0.17314, saving model to best_mnist_model.keras
+1688/1688 - 4s - 3ms/step - accuracy: 0.9279 - loss: 0.2334 - val_accuracy: 0.9455 - val_loss: 0.1731 - learning_rate: 1.0000e-03
+Epoch 7/100
+
+Epoch 7: val_loss improved from 0.17314 to 0.16616, saving model to best_mnist_model.keras
+1688/1688 - 6s - 3ms/step - accuracy: 0.9300 - loss: 0.2243 - val_accuracy: 0.9483 - val_loss: 0.1662 - learning_rate: 1.0000e-03
+Epoch 8/100
+
+Epoch 8: val_loss improved from 0.16616 to 0.16499, saving model to best_mnist_model.keras
+1688/1688 - 5s - 3ms/step - accuracy: 0.9326 - loss: 0.2178 - val_accuracy: 0.9489 - val_loss: 0.1650 - learning_rate: 1.0000e-03
+Epoch 9/100
+
+Epoch 9: val_loss improved from 0.16499 to 0.16019, saving model to best_mnist_model.keras
+1688/1688 - 6s - 3ms/step - accuracy: 0.9342 - loss: 0.2102 - val_accuracy: 0.9496 - val_loss: 0.1602 - learning_rate: 1.0000e-03
+Epoch 10/100
+
+Epoch 10: val_loss improved from 0.16019 to 0.15774, saving model to best_mnist_model.keras
+1688/1688 - 4s - 2ms/step - accuracy: 0.9356 - loss: 0.2057 - val_accuracy: 0.9505 - val_loss: 0.1577 - learning_rate: 1.0000e-03
+Epoch 11/100
+
+Epoch 11: val_loss improved from 0.15774 to 0.15649, saving model to best_mnist_model.keras
+1688/1688 - 5s - 3ms/step - accuracy: 0.9383 - loss: 0.1987 - val_accuracy: 0.9514 - val_loss: 0.1565 - learning_rate: 1.0000e-03
+Epoch 12/100
+
+Epoch 12: val_loss improved from 0.15649 to 0.15557, saving model to best_mnist_model.keras
+1688/1688 - 6s - 4ms/step - accuracy: 0.9379 - loss: 0.1959 - val_accuracy: 0.9511 - val_loss: 0.1556 - learning_rate: 1.0000e-03
+Epoch 13/100
+
+Epoch 13: val_loss improved from 0.15557 to 0.15415, saving model to best_mnist_model.keras
+1688/1688 - 4s - 3ms/step - accuracy: 0.9397 - loss: 0.1921 - val_accuracy: 0.9520 - val_loss: 0.1542 - learning_rate: 1.0000e-03
+Epoch 14/100
+
+Epoch 14: val_loss improved from 0.15415 to 0.15325, saving model to best_mnist_model.keras
+1688/1688 - 6s - 3ms/step - accuracy: 0.9407 - loss: 0.1893 - val_accuracy: 0.9528 - val_loss: 0.1533 - learning_rate: 1.0000e-03
+Epoch 15/100
+
+Epoch 15: val_loss improved from 0.15325 to 0.14798, saving model to best_mnist_model.keras
+1688/1688 - 4s - 2ms/step - accuracy: 0.9414 - loss: 0.1860 - val_accuracy: 0.9545 - val_loss: 0.1480 - learning_rate: 1.0000e-03
+Epoch 16/100
+
+Epoch 16: val_loss did not improve from 0.14798
+1688/1688 - 5s - 3ms/step - accuracy: 0.9428 - loss: 0.1823 - val_accuracy: 0.9547 - val_loss: 0.1486 - learning_rate: 1.0000e-03
+Epoch 17/100
+
+Epoch 17: val_loss improved from 0.14798 to 0.14797, saving model to best_mnist_model.keras
+
+Epoch 17: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
+1688/1688 - 5s - 3ms/step - accuracy: 0.9435 - loss: 0.1788 - val_accuracy: 0.9542 - val_loss: 0.1480 - learning_rate: 1.0000e-03
+Epoch 18/100
+
+Epoch 18: val_loss improved from 0.14797 to 0.14074, saving model to best_mnist_model.keras
+1688/1688 - 5s - 3ms/step - accuracy: 0.9481 - loss: 0.1647 - val_accuracy: 0.9568 - val_loss: 0.1407 - learning_rate: 5.0000e-04
+Epoch 19/100
+
+Epoch 19: val_loss did not improve from 0.14074
+1688/1688 - 6s - 3ms/step - accuracy: 0.9499 - loss: 0.1583 - val_accuracy: 0.9569 - val_loss: 0.1419 - learning_rate: 5.0000e-04
+Epoch 20/100
+
+Epoch 20: val_loss improved from 0.14074 to 0.13919, saving model to best_mnist_model.keras
+1688/1688 - 4s - 3ms/step - accuracy: 0.9498 - loss: 0.1592 - val_accuracy: 0.9573 - val_loss: 0.1392 - learning_rate: 5.0000e-04
+Epoch 21/100
+
+Epoch 21: val_loss did not improve from 0.13919
+1688/1688 - 4s - 3ms/step - accuracy: 0.9508 - loss: 0.1552 - val_accuracy: 0.9574 - val_loss: 0.1397 - learning_rate: 5.0000e-04
+Epoch 22/100
+
+Epoch 22: val_loss did not improve from 0.13919
+
+Epoch 22: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
+1688/1688 - 6s - 4ms/step - accuracy: 0.9509 - loss: 0.1559 - val_accuracy: 0.9578 - val_loss: 0.1406 - learning_rate: 5.0000e-04
+Epoch 23/100
+
+Epoch 23: val_loss improved from 0.13919 to 0.13805, saving model to best_mnist_model.keras
+1688/1688 - 9s - 5ms/step - accuracy: 0.9530 - loss: 0.1465 - val_accuracy: 0.9576 - val_loss: 0.1380 - learning_rate: 2.5000e-04
+Epoch 24/100
+
+Epoch 24: val_loss improved from 0.13805 to 0.13720, saving model to best_mnist_model.keras
+1688/1688 - 4s - 2ms/step - accuracy: 0.9540 - loss: 0.1436 - val_accuracy: 0.9585 - val_loss: 0.1372 - learning_rate: 2.5000e-04
+Epoch 25/100
+
+Epoch 25: val_loss improved from 0.13720 to 0.13664, saving model to best_mnist_model.keras
+1688/1688 - 5s - 3ms/step - accuracy: 0.9542 - loss: 0.1435 - val_accuracy: 0.9583 - val_loss: 0.1366 - learning_rate: 2.5000e-04
+Epoch 26/100
+
+Epoch 26: val_loss did not improve from 0.13664
+1688/1688 - 5s - 3ms/step - accuracy: 0.9549 - loss: 0.1413 - val_accuracy: 0.9580 - val_loss: 0.1382 - learning_rate: 2.5000e-04
+Epoch 27/100
+
+Epoch 27: val_loss did not improve from 0.13664
+
+Epoch 27: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
+1688/1688 - 4s - 3ms/step - accuracy: 0.9553 - loss: 0.1404 - val_accuracy: 0.9582 - val_loss: 0.1381 - learning_rate: 2.5000e-04
+Epoch 28/100
+
+Epoch 28: val_loss did not improve from 0.13664
+1688/1688 - 4s - 3ms/step - accuracy: 0.9557 - loss: 0.1382 - val_accuracy: 0.9590 - val_loss: 0.1368 - learning_rate: 1.2500e-04
+Epoch 28: early stopping
+Restoring model weights from the end of the best epoch: 25.
+
+✅ Test Accuracy: 0.9620, Loss: 0.1303
+
+📋 Classification Report:
+              precision    recall  f1-score   support
+
+           0     0.9758    0.9857    0.9807       980
+           1     0.9842    0.9868    0.9855      1135
+           2     0.9306    0.9360    0.9333      1032
+           3     0.9549    0.9634    0.9591      1010
+           4     0.9746    0.9766    0.9756       982
+           5     0.9293    0.9137    0.9214       892
+           6     0.9717    0.9666    0.9691       958
+           7     0.9611    0.9611    0.9611      1028
+           8     0.9691    0.9671    0.9681       974
+           9     0.9640    0.9564    0.9602      1009
+
+    accuracy                         0.9620     10000
+   macro avg     0.9615    0.9613    0.9614     10000
+weighted avg     0.9620    0.9620    0.9620     10000
+
+
+

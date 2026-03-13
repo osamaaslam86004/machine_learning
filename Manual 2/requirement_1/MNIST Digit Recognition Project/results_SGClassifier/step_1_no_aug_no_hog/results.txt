@@ -1,0 +1,45 @@
+data loaded.....
+Split into train/val/test 60%/20%/20% ..........
+Fitting 3 folds for each of 20 candidates, totalling 60 fits
+Best hyperparameters: {'classifier__alpha': 0.0001, 'classifier__early_stopping': True, 'classifier__loss': 'hinge', 'classifier__max_iter': 150, 'classifier__penalty': 'l2', 'classifier__tol': 0.001}
+pipeline saved...............
+plot learning curve ..........
+
+
+Validation Report:
+              precision    recall  f1-score   support
+
+           0       0.95      0.97      0.96      1381
+           1       0.94      0.96      0.95      1575
+           2       0.92      0.91      0.91      1398
+           3       0.89      0.88      0.88      1428
+           4       0.94      0.91      0.92      1365
+           5       0.87      0.85      0.86      1262
+           6       0.92      0.96      0.94      1375
+           7       0.94      0.91      0.92      1459
+           8       0.87      0.87      0.87      1365
+           9       0.86      0.90      0.88      1392
+
+    accuracy                           0.91     14000
+   macro avg       0.91      0.91      0.91     14000
+weighted avg       0.91      0.91      0.91     14000
+
+
+Test Report:
+              precision    recall  f1-score   support
+
+           0       0.94      0.97      0.95      1381
+           1       0.95      0.97      0.96      1575
+           2       0.92      0.89      0.91      1398
+           3       0.89      0.88      0.88      1428
+           4       0.94      0.90      0.92      1365
+           5       0.87      0.85      0.86      1263
+           6       0.93      0.95      0.94      1375
+           7       0.94      0.93      0.93      1459
+           8       0.86      0.86      0.86      1365
+           9       0.87      0.90      0.88      1391
+
+    accuracy                           0.91     14000
+   macro avg       0.91      0.91      0.91     14000
+weighted avg       0.91      0.91      0.91     14000
+

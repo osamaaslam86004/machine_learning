@@ -1,0 +1,351 @@
+#### train model: with C=1 gamma="scale" 
+
+Model results: SVR()
+Model RMSE scores: [116729.13778306 120113.99351281 113925.04340616 120399.11878641
+ 114687.49942071 122785.64737282 119853.79338279 118280.31108193
+ 120230.82615529 118840.1885232 ]
+SVR Cross-Validation Scores:
+Scores: [116729.13778306 120113.99351281 113925.04340616 120399.11878641
+ 114687.49942071 122785.64737282 119853.79338279 118280.31108193
+ 120230.82615529 118840.1885232 ]
+Mean: 118584.55594251942
+Standard deviation: 2609.6120823493407
+Fitting 5 folds for each of 30 candidates, totalling 150 fits
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  28.2s
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  28.4s
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  27.4s
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  27.3s
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  27.3s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  27.6s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  27.4s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  28.0s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  27.2s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  28.3s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  26.7s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  26.2s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  26.5s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  26.8s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  26.4s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.3s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  26.9s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.9s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.4s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.8s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  26.5s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  26.5s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  26.4s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  27.2s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  26.7s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  27.4s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  27.5s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  28.1s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  27.8s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  27.9s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  26.9s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  27.0s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  26.5s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  27.6s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  27.0s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  25.8s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  25.2s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  26.7s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  25.4s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  26.7s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.6s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.4s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.9s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.9s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.9s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  27.6s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  27.2s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  28.1s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  27.9s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  28.0s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  27.4s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  27.5s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  27.3s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  28.2s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  28.0s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  27.3s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  27.8s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  27.8s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  27.6s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  28.0s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  24.7s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  25.2s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  25.7s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  26.3s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  25.7s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  26.9s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  27.0s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  27.6s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  27.0s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  27.5s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  26.8s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  27.2s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  26.8s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  27.5s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  26.9s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  27.7s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  27.5s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  28.2s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  27.5s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  27.5s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  28.4s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  28.4s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  28.6s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  29.5s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  28.7s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  25.2s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  25.1s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  26.1s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  25.3s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  26.3s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  27.0s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  26.8s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  27.5s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  27.8s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  26.8s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.4s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.2s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.5s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.0s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.5s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  26.5s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  25.8s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  26.4s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  26.8s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  25.8s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  25.6s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  24.8s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  26.1s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  25.6s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  26.6s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  25.2s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  24.7s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  25.5s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  26.2s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  25.7s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  27.2s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  26.9s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  27.7s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  26.6s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  27.5s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.5s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.7s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.6s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.7s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.5s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  25.5s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  23.8s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  25.8s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  25.7s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  26.0s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  25.9s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  26.1s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  26.0s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  26.3s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  26.3s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  27.7s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  27.3s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  27.9s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  27.4s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  28.1s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.1s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.1s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.6s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.9s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.4s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  27.2s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  27.5s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  27.3s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  28.0s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  14.2s
+
+Best hyperparameters found by Randomized Search:
+{'kernel': 'rbf', 'gamma': np.float64(0.07847599703514607), 'C': np.float64(1000.0)}
+
+Final RMSE on the test set: 68289.7860490476
+95% Confidence Interval for Test RMSE (t-dist): [65811.07744225 70681.62309355]
+
+==========================================================================================================================
+
+
+#### train model: with C=1000 gamma="0.1" 
+Model results: SVR(C=1000, gamma=0.1)
+Model RMSE scores: [72527.29703345 68653.89534442 65946.8789068  73094.81015378
+ 67699.64260757 74560.39210807 73699.35126329 70327.34338461
+ 70662.66599857 71714.48870094]
+SVR Cross-Validation Scores:
+Scores: [72527.29703345 68653.89534442 65946.8789068  73094.81015378
+ 67699.64260757 74560.39210807 73699.35126329 70327.34338461
+ 70662.66599857 71714.48870094]
+Mean: 70888.67655014945
+Standard deviation: 2637.5590973376334
+Fitting 5 folds for each of 30 candidates, totalling 150 fits
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  27.7s
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  27.9s
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  27.2s
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  27.6s
+[CV] END C=4.281332398719392, gamma=0.023357214690901212, kernel=rbf; total time=  27.4s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  27.5s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  27.5s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  27.8s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  27.4s
+[CV] END ......C=48.32930238571752, gamma=0.0001, kernel=rbf; total time=  27.9s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  25.9s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  26.6s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  25.9s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  27.1s
+[CV] END C=0.018329807108324356, gamma=0.26366508987303583, kernel=rbf; total time=  26.6s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.3s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.4s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.5s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.4s
+[CV] END C=4.281332398719392, gamma=0.04281332398719392, kernel=rbf; total time=  27.8s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  26.7s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  26.5s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  26.5s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  27.2s
+[CV] END C=0.11288378916846889, gamma=0.26366508987303583, kernel=rbf; total time=  26.6s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  27.5s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  27.5s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  28.2s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  27.8s
+[CV] END C=0.11288378916846889, gamma=0.0011288378916846883, kernel=rbf; total time=  27.9s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  27.2s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  26.8s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  26.8s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  27.4s
+[CV] END C=162.3776739188721, gamma=0.023357214690901212, kernel=rbf; total time=  27.1s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  25.7s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  26.0s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  26.0s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  26.0s
+[CV] END C=0.11288378916846889, gamma=0.4832930238571752, kernel=rbf; total time=  26.3s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.6s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.5s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.8s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  28.2s
+[CV] END C=26.366508987303583, gamma=0.00379269019073225, kernel=rbf; total time=  27.6s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  27.4s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  27.6s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  28.3s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  27.6s
+[CV] END C=0.37926901907322497, gamma=0.00379269019073225, kernel=rbf; total time=  28.3s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  27.3s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  27.6s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  27.2s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  28.5s
+[CV] END .....C=0.01, gamma=0.023357214690901212, kernel=rbf; total time=  27.6s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  27.6s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  27.3s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  28.5s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  27.6s
+[CV] END C=545.5594781168514, gamma=0.00018329807108324357, kernel=rbf; total time=  28.1s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  25.6s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  24.8s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  25.7s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  25.2s
+[CV] END C=0.03359818286283781, gamma=1.623776739188721, kernel=rbf; total time=  25.0s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  27.0s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  26.4s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  27.7s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  26.8s
+[CV] END C=0.06158482110660264, gamma=0.14384498882876628, kernel=rbf; total time=  27.7s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  27.0s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  27.0s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  27.1s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  27.4s
+[CV] END C=0.37926901907322497, gamma=0.14384498882876628, kernel=rbf; total time=  26.9s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  27.8s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  27.8s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  28.1s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  27.8s
+[CV] END C=0.03359818286283781, gamma=0.0003359818286283781, kernel=rbf; total time=  27.6s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  28.5s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  29.4s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  29.0s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  29.9s
+[CV] END C=26.366508987303583, gamma=5.455594781168514, kernel=rbf; total time=  30.2s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  24.6s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  24.0s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  25.6s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  25.5s
+[CV] END C=545.5594781168514, gamma=1.623776739188721, kernel=rbf; total time=  26.4s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  27.2s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  27.5s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  27.0s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  28.2s
+[CV] END C=7.847599703514606, gamma=0.07847599703514607, kernel=rbf; total time=  27.4s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.3s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.3s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  28.0s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.4s
+[CV] END ....C=1000.0, gamma=0.00206913808111479, kernel=rbf; total time=  27.6s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  26.4s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  26.5s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  26.4s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  27.0s
+[CV] END C=0.06158482110660264, gamma=2.9763514416313193, kernel=rbf; total time=  26.5s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  25.9s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  25.5s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  26.1s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  25.6s
+[CV] END .......C=0.01, gamma=0.8858667904100823, kernel=rbf; total time=  26.4s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  25.2s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  26.4s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  25.0s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  26.0s
+[CV] END ....C=1000.0, gamma=0.07847599703514607, kernel=rbf; total time=  26.1s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  27.1s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  27.1s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  27.2s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  27.3s
+[CV] END C=26.366508987303583, gamma=0.07847599703514607, kernel=rbf; total time=  27.7s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.6s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.5s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.6s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.9s
+[CV] END ...................C=0.01, gamma=0.0001, kernel=rbf; total time=  27.8s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  25.1s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  25.4s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  25.1s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  25.6s
+[CV] END ......C=1000.0, gamma=1.623776739188721, kernel=rbf; total time=  26.4s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  26.1s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  26.4s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  25.6s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  27.0s
+[CV] END C=0.20691380811147891, gamma=0.4832930238571752, kernel=rbf; total time=  25.3s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  27.7s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  27.5s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  28.0s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  27.8s
+[CV] END C=7.847599703514606, gamma=0.00206913808111479, kernel=rbf; total time=  27.9s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.6s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.6s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.4s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  28.4s
+[CV] END C=26.366508987303583, gamma=0.0003359818286283781, kernel=rbf; total time=  27.6s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  27.4s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  27.6s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  28.2s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  27.2s
+[CV] END C=0.20691380811147891, gamma=0.0011288378916846883, kernel=rbf; total time=  15.8s
+
+Best hyperparameters found by Randomized Search:
+{'kernel': 'rbf', 'gamma': np.float64(0.07847599703514607), 'C': np.float64(1000.0)}
+
+Final RMSE on the test set: 68289.7860490476
+95% Confidence Interval for Test RMSE (t-dist): [65811.07744225 70681.62309355]
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,179 @@
+Digit 0: 5923 occurrences
+Digit 1: 6742 occurrences
+Digit 2: 5958 occurrences
+Digit 3: 6131 occurrences
+Digit 4: 5842 occurrences
+Digit 5: 5421 occurrences
+Digit 6: 5918 occurrences
+Digit 7: 6265 occurrences
+Digit 8: 5851 occurrences
+Digit 9: 5949 occurrences
+Digit 0: 9.87%
+Digit 1: 11.24%
+Digit 2: 9.93%
+Digit 3: 10.22%
+Digit 4: 9.74%
+Digit 5: 9.04%
+Digit 6: 9.86%
+Digit 7: 10.44%
+Digit 8: 9.75%
+Digit 9: 9.92%
+Loading MNIST dataset...
+Dataset loaded. Training shape: (60000, 784), Test shape: (10000, 784)
+
+
+----------------------------------------------------------------------------------------------
+Training and evaluating SGDClassifier (Binary 5-detector)...
+----------------------------------------------------------------------------------------------
+SGDClassifier (Binary 5-detector) Cross-Validation Accuracy Scores: [0.95035 0.96035 0.9604 ]
+SGDClassifier (Binary 5-detector) Confusion Matrix: [[53892   687]
+ [ 1891  3530]]
+SGDClassifier (Binary 5-detector) Precision using precision_score: 0.8370879772350012
+SGDClassifier (Binary 5-detector) Recall using recall_score: 0.6511713705958311
+SGDClassifier (Binary 5-detector) F1 Scores: 0.7325171197343847
+SGDClassifier (Binary 5-detector) Decision Scores: [  1200.93051237 -26883.79202424 -33072.03475406 ...  13272.12718981
+  -7258.47203373 -16877.50840447]
+Figure(640x480)
+Precision score for threshold=8000: 0.9000345901072293
+Recall score for threshold=8000: 0.4799852425751706
+Figure(640x480)
+Area under ROC Curve: 0.9604938554008616
+
+
+
+
+-----------------------------------------------------------------------------------------
+RandomForest Classifier (Binary 5-detector)...
+-----------------------------------------------------------------------------------------
+RandomforestClassifier (Binary 5-detector) Cross-Validation Accuracy: 0.9871666666666666
+RandomForestClassifier (Binary 5-detector) Confusion Matrix: [[54534    45]
+ [  725  4696]]
+SGDClassifier (Binary 5-detector) Precision using precision_score: 0.9905083315756169
+SGDClassifier (Binary 5-detector) Recall using recall_score: 0.8662608374838591
+SGDClassifier (Binary 5-detector) F1 Scores: 0.9242275142688448
+RandomForestClassifier (Binary 5-detector) prediction Probabilities: [0.89 0.01 0.04 ... 0.98 0.08 0.06]
+Figure(640x480)
+Precision score for threshold=8000: 0.9020883259157823
+Recall score for threshold=8000: 0.9721453606345692
+Figure(640x480)
+Area under ROC Curve: 0.9983436731328145
+
+
+
+-------------------------------------------------------
+SGDClassifier (Multiclass 0-9) with OvR-strategy:
+-------------------------------------------------------
+Accuracy: 0.9003
+Precision: 0.90714280650612
+Recall: 0.8991378502460241
+F1 Score: 0.9009333361879923
+Confusion Matrix: 
+[[5583    0   23    7    9   46   34    7  213    1]
+ [   0 6403   37   26    4   45    4    8  202   13]
+ [  28   26 5252   99   72   27   64   38  342   10]
+ [  22   17  117 5257    2  215   25   39  365   72]
+ [  12   14   49   12 5217   12   31   24  301  170]
+ [  27   16   34  175   55 4485   73   16  478   62]
+ [  30   16   45    3   45   98 5550    6  124    1]
+ [  19    9   53   33   51   13    3 5708  169  207]
+ [  17   63   46   93    3  130   24   11 5419   45]
+ [  24   18   30   67  116   39    1  181  329 5144]]
+Figure(1000x800)
+
+
+
+
+-------------------------------------------------------
+SGDClassifier (Multiclass 0-9) with OvO-strategy:
+------------------------------------------------------
+Accuracy: 0.9164333333333333
+Precision: 0.9158134010651493
+Recall: 0.9155541091432651
+F1 Score: 0.9155984263975989
+Confusion Matrix: 
+[[5645    1   37   18    8  106   46    6   44   12]
+ [   2 6514   54   30   10   22    3   13   89    5]
+ [  27   55 5351  152   84   37   61   52  124   15]
+ [  13   22  122 5455    2  248    9   39  181   40]
+ [   7   16   68    5 5375   29   42   41   61  198]
+ [  34   13   29  228   29 4820   61    7  163   37]
+ [  35    9   76    9   41   85 5601    2   60    0]
+ [   8   16   78   62   48   31    1 5800   44  177]
+ [  34   77   99  168   10  169   30   15 5196   53]
+ [  13   34   37   64  180   57    1  249   85 5229]]
+Figure(1000x800)
+
+
+
+
+-----------------------------------------------------------------------------------------
+RandomForest Classifier (Binary 5-detector)
+-----------------------------------------------------------------------------------------
+RandomforestClassifier (Binary 5-detector) Cross-Validation Accuracy: 0.9871666666666666
+RandomForestClassifier (Binary 5-detector) Confusion Matrix: [[54534    45]
+ [  725  4696]]
+SGDClassifier (Binary 5-detector) Precision using precision_score: 0.9905083315756169
+SGDClassifier (Binary 5-detector) Recall using recall_score: 0.8662608374838591
+SGDClassifier (Binary 5-detector) F1 Scores: 0.9242275142688448
+RandomForestClassifier (Binary 5-detector) prediction Probabilities: [0.89 0.01 0.04 ... 0.98 0.08 0.06]
+Figure(640x480)
+Precision score for threshold=8000: 0.9020883259157823
+Recall score for threshold=8000: 0.9721453606345692
+Figure(640x480)
+Area under ROC Curve: 0.9983436731328145
+
+
+--------------------------------------------------------------------------
+RandomForest Classifier (Multiclass 0-9)
+--------------------------------------------------------------------------
+Dataset loaded. Training shape: (60000, 784), Test shape: (10000, 784)
+
+RandomForest Classifier (Multiclass 0-9) with OvR-strategy:
+Cross-Validation Accuracy: 0.9645833333333333
+Confusion Matrix: [[5840    1    8    2    4    9   20    1   35    3]
+ [   1 6635   43   11   13    5    6   13   12    3]
+ [  27   12 5749   30   32    4   20   37   41    6]
+ [   7    7   91 5811    3   63    7   49   61   32]
+ [  12   13   14    1 5645    0   28   14   17   98]
+ [  20    9    9   64   12 5198   53    6   31   19]
+ [  26   11    5    0   12   46 5803    0   15    0]
+ [   4   24   58    6   37    1    0 6037   11   87]
+ [   9   35   44   52   26   52   27    5 5525   76]
+ [  21   10   14   76   75   15    3   58   45 5632]]
+Precision using precision_score: 0.9645833333333333
+Recall using recall_score: 0.9645833333333333
+F1 Scores: 0.9645833333333333
+
+prediction Probabilities: [[0.   0.02 0.02 ... 0.   0.01 0.01]
+ [0.99 0.   0.   ... 0.   0.   0.  ]
+ [0.   0.   0.02 ... 0.06 0.02 0.07]
+ ...
+ [0.   0.   0.   ... 0.01 0.01 0.05]
+ [0.03 0.02 0.04 ... 0.   0.01 0.  ]
+ [0.02 0.01 0.04 ... 0.04 0.72 0.06]]
+
+Plotting Precision, Recall vs Threshold......... 
+Figure(1200x2000)
+
+Plotting ROC curve......... 
+Figure(1200x2000)
+
+ROC AUC per class:
+Digit 0: AUC = 0.9997
+Digit 1: AUC = 0.9996
+Digit 2: AUC = 0.9988
+Digit 3: AUC = 0.9976
+Digit 4: AUC = 0.9988
+Digit 5: AUC = 0.9986
+Digit 6: AUC = 0.9996
+Digit 7: AUC = 0.9991
+Digit 8: AUC = 0.9978
+Digit 9: AUC = 0.9974
+
+Average ROC AUC across all classes: 0.9987
+
+
+
+
+
+

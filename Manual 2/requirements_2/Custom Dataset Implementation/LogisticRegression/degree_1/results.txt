@@ -1,0 +1,43 @@
+Datasets loaded successfully.
+Fitting 5 folds for each of 540 candidates, totalling 2700 fits
+
+Training time: 90.06 seconds
+Best parameters: {'classifier__C': 10, 'classifier__class_weight': None, 'classifier__max_iter': 100, 'classifier__penalty': 'l2', 'classifier__tol': 0.001}
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.81      0.89      0.85       110
+           1       0.79      0.67      0.72        69
+
+    accuracy                           0.80       179
+   macro avg       0.80      0.78      0.79       179
+weighted avg       0.80      0.80      0.80       179
+
+
+Confusion Matrix:
+[[98 12]
+ [23 46]]
+
+Accuracy: 0.8045
+Precision: 0.7931
+Recall: 0.6667
+F1 Score: 0.7244
+ROC AUC: 0.8428
+
+
+
+Top 20 Feature Importances:
+         Feature  Coefficient
+8        Sex_1.0     1.413653
+7        Sex_0.0    -1.262505
+4     Pclass_1.0     1.115979
+6     Pclass_3.0    -1.105533
+0            Age    -0.510262
+11  Embarked_2.0     0.397326
+9   Embarked_0.0    -0.331859
+2          SibSp    -0.266560
+5     Pclass_2.0     0.140701
+1           Fare     0.111179
+10  Embarked_1.0     0.085680
+3          Parch    -0.071670

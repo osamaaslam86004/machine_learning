@@ -1,0 +1,70 @@
+Downloading train.csv (attempt 1/3)
+Downloading test.csv (attempt 1/3)
+Train data title counts:
+Title
+Mr        517
+Miss      182
+Mrs       125
+Master     40
+Rare       27
+Name: count, dtype: int64
+
+Test data title counts:
+Title
+Mr        240
+Miss       78
+Mrs        72
+Master     21
+Rare        7
+Name: count, dtype: int64
+Best parameters: {'max_depth': 20, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 50}
+Best cross-validation score: 0.8383968363567886
+Cross-validation scores: [0.82681564 0.79775281 0.89325843 0.80898876 0.86516854]
+Mean: 0.8383968363567886
+Standard deviation: 0.035713901870219826
+Scores: [0.82681564 0.79775281 0.89325843 0.80898876 0.86516854]
+
+Confusion Matrix:
+[[497  52]
+ [ 92 250]]
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.84      0.91      0.87       549
+           1       0.83      0.73      0.78       342
+
+    accuracy                           0.84       891
+   macro avg       0.84      0.82      0.82       891
+weighted avg       0.84      0.84      0.84       891
+
+train_submission.csv file created.
+
+📊 Selected Important Features:
+
+Index:  0, Name: Age
+Index:  1, Name: SibSp
+Index:  2, Name: Parch
+Index:  3, Name: Fare
+Index:  6, Name: Pclass_3
+Index:  7, Name: Sex_female
+Index:  8, Name: Sex_male
+Index: 14, Name: Title_Mr
+Index: 15, Name: Title_Mrs
+Best parameters: {'max_depth': 10, 'min_samples_split': 5, 'n_estimators': 50}
+Cross-validation scores: [0.83240223 0.82022472 0.88764045 0.80337079 0.83707865]
+Mean: 0.8361433682756889
+Standard deviation: 0.02826399020273272
+Scores: [0.83240223 0.82022472 0.88764045 0.80337079 0.83707865]
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.84      0.90      0.87       549
+           1       0.82      0.73      0.77       342
+
+    accuracy                           0.84       891
+   macro avg       0.83      0.82      0.82       891
+weighted avg       0.84      0.84      0.83       891
+
+test_submission.csv file created.

@@ -1,0 +1,21 @@
+
+Link: link: https://colab.research.google.com/drive/1QR25nw30MkL2XO8aYjC74dwkFqVifJbj?usp=sharing
+
+              precision    recall  f1-score   support
+
+           0       0.98      0.98      0.98       983
+           1       0.98      0.98      0.98      1152
+           2       0.95      0.97      0.96       967
+           3       0.97      0.95      0.96      1034
+           4       0.96      0.97      0.96       906
+           5       0.98      0.96      0.97       937
+           6       0.98      0.98      0.98       961
+           7       0.97      0.98      0.97      1055
+           8       0.95      0.95      0.95       969
+           9       0.96      0.95      0.95      1036
+
+    accuracy                           0.97     10000
+   macro avg       0.97      0.97      0.97     10000
+weighted avg       0.97      0.97      0.97     10000
+
+['scaler_mnist.joblib']

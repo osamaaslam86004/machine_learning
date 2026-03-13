@@ -1,0 +1,311 @@
+Loading Original Dtataset...
+Loading MNIST dataset...
+Dataset loaded. Training shape: (60000, 784), Test shape: (10000, 784)
+Digit 0: 5923 occurrences
+Digit 1: 6742 occurrences
+Digit 2: 5958 occurrences
+Digit 3: 6131 occurrences
+Digit 4: 5842 occurrences
+Digit 5: 5421 occurrences
+Digit 6: 5918 occurrences
+Digit 7: 6265 occurrences
+Digit 8: 5851 occurrences
+Digit 9: 5949 occurrences
+Digit 0: 9.87%
+Digit 1: 11.24%
+Digit 2: 9.93%
+Digit 3: 10.22%
+Digit 4: 9.74%
+Digit 5: 9.04%
+Digit 6: 9.86%
+Digit 7: 10.44%
+Digit 8: 9.75%
+Digit 9: 9.92%
+🌐 Downloading PCA-reduced MNIST data from Google Drive...
+Downloading...
+From (original): https://drive.google.com/uc?id=1jLwwYnD6CTPTGdu1Bub_04Co5ISO3dQH
+From (redirected): https://drive.google.com/uc?id=1jLwwYnD6CTPTGdu1Bub_04Co5ISO3dQH&confirm=t&uuid=f870e528-ad10-419e-a306-b3009c7ec478
+To: /content/mnist_pca_0.95_no_augmented_data.npz
+100% 82.7M/82.7M [00:00<00:00, 102MB/s]
+📦 Loading PCA-reduced MNIST data from file...
+✅ Loaded PCA data. Training shape: (60000, 154), Test shape: (10000, 154)
+
+ Training SGDClassifier (Multiclass 0-9) with OvR-strategy....:
+Fitting 3 folds for each of 27 candidates, totalling 81 fits
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l1; total time= 1.7min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l1; total time= 1.5min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l1; total time= 1.7min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l2; total time=  12.9s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l2; total time=  13.1s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l2; total time=  13.7s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  31.4s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  28.4s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  29.3s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l1; total time= 1.6min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l1; total time= 1.6min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l1; total time= 1.7min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l2; total time=  12.9s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l2; total time=  13.0s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l2; total time=  13.7s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  29.3s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  28.1s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  28.8s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l1; total time= 1.6min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l1; total time= 1.5min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l1; total time= 1.7min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l2; total time=  13.0s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l2; total time=  13.1s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l2; total time=  14.0s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  30.2s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  28.1s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  28.8s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l1; total time=  32.6s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l1; total time=  33.6s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l1; total time=  33.4s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l2; total time=   7.3s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l2; total time=   7.0s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l2; total time=   7.9s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  18.1s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  18.1s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  19.9s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l1; total time=  32.4s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l1; total time=  31.8s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l1; total time=  33.7s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l2; total time=   6.5s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l2; total time=   7.6s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l2; total time=   7.0s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  19.2s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  17.9s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  18.7s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l1; total time=  33.7s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l1; total time=  32.5s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l1; total time=  34.5s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l2; total time=   6.7s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l2; total time=   7.8s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l2; total time=   7.3s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  19.5s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  18.1s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  19.1s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l1; total time=  17.0s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l1; total time=  15.0s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l1; total time=  16.1s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l2; total time=   4.1s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l2; total time=   4.9s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l2; total time=   4.5s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=   9.6s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=   8.2s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  10.7s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l1; total time=  16.1s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l1; total time=  14.9s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l1; total time=  16.9s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l2; total time=   4.5s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l2; total time=   3.8s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l2; total time=   5.1s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=   8.8s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=   9.7s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  10.7s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l1; total time=  16.0s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l1; total time=  14.8s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l1; total time=  16.0s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l2; total time=   4.1s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l2; total time=   4.8s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l2; total time=   4.5s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=   9.7s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=   8.3s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  10.7s
+Best hyperparameters found by GridSearchCV:
+{'estimator__alpha': 0.001, 'estimator__max_iter': 2000, 'estimator__penalty': 'l2'}
+Best model saved to 'best_sgd_ovr_train_model.joblib'
+
+ Evaluating SGDClassifier......:
+Accuracy: 0.9061333333333333
+Precision: 0.9063590124864959
+Recall: 0.9052016128429721
+F1 Score: 0.9054491532746205
+Confusion Matrix: 
+[[5512    0   61   27   10  125   40   10  134    4]
+ [   0 6378   68   37    6   73    0   13  142   25]
+ [  22   25 5387   98   66   43   58   58  178   23]
+ [  17   10  164 5407    3  241   14   49  161   65]
+ [   5    7   67   19 5324   29   23   14  113  241]
+ [  45   16   73  181   55 4686   79   24  201   61]
+ [  19    9  103    7   38  138 5489    8  104    3]
+ [   9   11   89   36   54   31    3 5785   48  199]
+ [  17   59   84  168   31  230   26   15 5146   75]
+ [  14    4   36  107  147   84    1  166  136 5254]]
+Figure(1000x800)
+Classification Report for train:
+              precision    recall  f1-score   support
+
+           0       0.97      0.93      0.95      5923
+           1       0.98      0.95      0.96      6742
+           2       0.88      0.90      0.89      5958
+           3       0.89      0.88      0.89      6131
+           4       0.93      0.91      0.92      5842
+           5       0.82      0.86      0.84      5421
+           6       0.96      0.93      0.94      5918
+           7       0.94      0.92      0.93      6265
+           8       0.81      0.88      0.84      5851
+           9       0.88      0.88      0.88      5949
+
+    accuracy                           0.91     60000
+   macro avg       0.91      0.91      0.91     60000
+weighted avg       0.91      0.91      0.91     60000
+
+
+ Fine-tune SGDClassifier:
+Fitting 3 folds for each of 27 candidates, totalling 81 fits
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l1; total time= 9.0min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l1; total time= 9.2min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l1; total time= 9.7min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l2; total time=  33.9s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l2; total time=  35.1s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=l2; total time=  36.2s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time= 1.3min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time= 1.2min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time= 1.2min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l1; total time= 9.2min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l1; total time= 9.2min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l1; total time= 9.5min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l2; total time=  34.6s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l2; total time=  35.3s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=l2; total time=  36.1s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time= 1.3min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time= 1.2min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time= 1.3min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l1; total time= 9.2min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l1; total time= 9.1min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l1; total time= 9.4min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l2; total time=  34.1s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l2; total time=  34.2s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=l2; total time=  36.2s
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time= 1.3min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time= 1.2min
+[CV] END estimator__alpha=0.0001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time= 1.2min
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l1; total time= 4.3min
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l1; total time= 3.8min
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l1; total time= 3.9min
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l2; total time=  19.8s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l2; total time=  21.0s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=l2; total time=  21.1s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  46.9s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  49.0s
+[CV] END estimator__alpha=0.001, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  48.7s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l1; total time= 4.3min
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l1; total time= 3.8min
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l1; total time= 3.9min
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l2; total time=  20.3s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l2; total time=  20.3s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=l2; total time=  21.2s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  46.4s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  49.4s
+[CV] END estimator__alpha=0.001, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  48.2s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l1; total time= 4.3min
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l1; total time= 3.8min
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l1; total time= 3.9min
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l2; total time=  20.3s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l2; total time=  20.4s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=l2; total time=  21.2s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  46.4s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  49.5s
+[CV] END estimator__alpha=0.001, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  48.5s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l1; total time= 2.0min
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l1; total time= 1.8min
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l1; total time= 2.0min
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l2; total time=  14.4s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l2; total time=  15.1s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=l2; total time=  15.7s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  30.2s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  31.7s
+[CV] END estimator__alpha=0.01, estimator__max_iter=2000, estimator__penalty=elasticnet; total time=  32.3s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l1; total time= 2.0min
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l1; total time= 1.8min
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l1; total time= 2.0min
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l2; total time=  14.6s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l2; total time=  15.3s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=l2; total time=  15.9s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  30.7s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  31.5s
+[CV] END estimator__alpha=0.01, estimator__max_iter=3000, estimator__penalty=elasticnet; total time=  31.8s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l1; total time= 2.0min
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l1; total time= 1.8min
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l1; total time= 2.0min
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l2; total time=  14.4s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l2; total time=  15.2s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=l2; total time=  15.5s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  30.5s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  32.2s
+[CV] END estimator__alpha=0.01, estimator__max_iter=5000, estimator__penalty=elasticnet; total time=  32.1s
+Best hyperparameters found by GridSearchCV:
+{'estimator__alpha': 0.001, 'estimator__max_iter': 2000, 'estimator__penalty': 'l2'}
+Best model saved to 'best_sgd_ovr_fine-tune_model.joblib'
+
+ Evaluating Fine-tuned SGDClassifier:
+Accuracy: 0.8802233333333334
+Precision: 0.8787356357112343
+Recall: 0.8784883273801037
+F1 Score: 0.8785741032438951
+Confusion Matrix: 
+[[27638     6   302   279    53   378   265    66   518   110]
+ [   28 32082   301   231    60   252    55    91   501   109]
+ [  145   232 25892   489   453   253   620   553   970   183]
+ [  163   157  1067 26046    64  1244   146   381   889   498]
+ [   34   125   328    80 26033   150   292   130   362  1676]
+ [  326   173   411  1647   480 21821   758   204   900   385]
+ [  190   218   395    44   222   523 27561    60   352    25]
+ [  115   164   538   187   446   123    33 28464   214  1041]
+ [  197   666   574  1286   239  1497   276   208 23464   848]
+ [  152   215   211   704   996   419    15  1436   531 25066]]
+Figure(1200x600)
+Figure(1000x800)
+Classification Report for fine_tune:
+              precision    recall  f1-score   support
+
+           0       0.95      0.93      0.94     29615
+           1       0.94      0.95      0.95     33710
+           2       0.86      0.87      0.87     29790
+           3       0.84      0.85      0.84     30655
+           4       0.90      0.89      0.89     29210
+           5       0.82      0.81      0.81     27105
+           6       0.92      0.93      0.92     29590
+           7       0.90      0.91      0.90     31325
+           8       0.82      0.80      0.81     29255
+           9       0.84      0.84      0.84     29745
+
+    accuracy                           0.88    300000
+   macro avg       0.88      0.88      0.88    300000
+weighted avg       0.88      0.88      0.88    300000
+
+
+
+ Making Predictions and Evaluate
+Performance Metrics on Test Set.......:
+  Accuracy: 0.6188
+  Confusion Matrix:
+ [[ 974    4    0    0    0    0    2    0    0    0]
+ [   0 1131    1    2    0    0    1    0    0    0]
+ [ 235  322  294    1   12    0  149   13    5    1]
+ [ 216  231    2  496    2    5   24   21    5    8]
+ [  66  115    1    0  765    0   25    1    0    9]
+ [ 334  215    0   23   27  186   64   31    0   12]
+ [ 112   61    0    0    3    0  782    0    0    0]
+ [  63  207    6    0    6    0    1  743    0    2]
+ [ 123  375    0   24   27    1   56   34  286   48]
+ [  83  151    1    5  139    0    2   96    1  531]]
+  Classification Report:
+               precision    recall  f1-score   support
+
+           0       0.44      0.99      0.61       980
+           1       0.40      1.00      0.57      1135
+           2       0.96      0.28      0.44      1032
+           3       0.90      0.49      0.64      1010
+           4       0.78      0.78      0.78       982
+           5       0.97      0.21      0.34       892
+           6       0.71      0.82      0.76       958
+           7       0.79      0.72      0.76      1028
+           8       0.96      0.29      0.45       974
+           9       0.87      0.53      0.66      1009
+
+    accuracy                           0.62     10000
+   macro avg       0.78      0.61      0.60     10000
+weighted avg       0.77      0.62      0.60     10000

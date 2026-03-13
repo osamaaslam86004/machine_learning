@@ -1,0 +1,39 @@
+
+Total Training Time: 40 minutes
+
+Epoch 21: val_loss improved from 0.23390 to 0.23369, saving model to best_hog_mlp_model.keras
+6750/6750 - 82s - 12ms/step - accuracy: 0.9285 - loss: 0.2113 - val_accuracy: 0.9260 - val_loss: 0.2337
+Epoch 22/30
+
+Epoch 22: val_loss did not improve from 0.23369
+6750/6750 - 52s - 8ms/step - accuracy: 0.9302 - loss: 0.2077 - val_accuracy: 0.9257 - val_loss: 0.2366
+Epoch 23/30
+
+Epoch 23: val_loss did not improve from 0.23369
+6750/6750 - 79s - 12ms/step - accuracy: 0.9310 - loss: 0.2040 - val_accuracy: 0.9250 - val_loss: 0.2388
+Epoch 24/30
+
+Epoch 24: val_loss did not improve from 0.23369
+6750/6750 - 82s - 12ms/step - accuracy: 0.9321 - loss: 0.2017 - val_accuracy: 0.9259 - val_loss: 0.2350
+Epoch 24: early stopping
+Restoring model weights from the end of the best epoch: 21.
+
+
+📋 Classification Report:
+              precision    recall  f1-score   support
+
+           0     0.9848    0.9929    0.9888       980
+           1     0.9903    0.9903    0.9903      1135
+           2     0.9815    0.9777    0.9796      1032
+           3     0.9631    0.9832    0.9731      1010
+           4     0.9787    0.9817    0.9802       982
+           5     0.9908    0.9709    0.9807       892
+           6     0.9926    0.9770    0.9847       958
+           7     0.9769    0.9893    0.9831      1028
+           8     0.9693    0.9723    0.9708       974
+           9     0.9760    0.9653    0.9706      1009
+
+    accuracy                         0.9803     10000
+   macro avg     0.9804    0.9800    0.9802     10000
+weighted avg     0.9804    0.9803    0.9803     10000
+

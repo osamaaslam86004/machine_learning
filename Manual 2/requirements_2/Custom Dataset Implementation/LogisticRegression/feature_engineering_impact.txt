@@ -1,0 +1,65 @@
+Training model with polynomial degree: 1
+Degree: 1, Train Accuracy: 0.8104, Val Accuracy: 0.8045
+              precision    recall  f1-score   support
+
+           0       0.81      0.89      0.85       110
+           1       0.79      0.67      0.72        69
+
+    accuracy                           0.80       179
+   macro avg       0.80      0.78      0.79       179
+weighted avg       0.80      0.80      0.80       179
+
+Training model with polynomial degree: 2
+Degree: 2, Train Accuracy: 0.8258, Val Accuracy: 0.7933
+              precision    recall  f1-score   support
+
+           0       0.81      0.87      0.84       110
+           1       0.77      0.67      0.71        69
+
+    accuracy                           0.79       179
+   macro avg       0.79      0.77      0.78       179
+weighted avg       0.79      0.79      0.79       179
+
+Training model with polynomial degree: 3
+Degree: 3, Train Accuracy: 0.8287, Val Accuracy: 0.7877
+              precision    recall  f1-score   support
+
+           0       0.81      0.86      0.83       110
+           1       0.75      0.67      0.71        69
+
+    accuracy                           0.79       179
+   macro avg       0.78      0.77      0.77       179
+weighted avg       0.79      0.79      0.78       179
+
+Training model with polynomial degree: 4
+Degree: 4, Train Accuracy: 0.8301, Val Accuracy: 0.7933
+              precision    recall  f1-score   support
+
+           0       0.81      0.86      0.84       110
+           1       0.76      0.68      0.72        69
+
+    accuracy                           0.79       179
+   macro avg       0.79      0.77      0.78       179
+weighted avg       0.79      0.79      0.79       179
+
+Training model with polynomial degree: 5
+Degree: 5, Train Accuracy: 0.8315, Val Accuracy: 0.7933
+              precision    recall  f1-score   support
+
+           0       0.81      0.87      0.84       110
+           1       0.77      0.67      0.71        69
+
+    accuracy                           0.79       179
+   macro avg       0.79      0.77      0.78       179
+weighted avg       0.79      0.79      0.79       179
+
+
+
+Training and Validation Scores:
+Degree: 1, Training Accuracy: 0.8104, Validation Accuracy: 0.8045
+Degree: 2, Training Accuracy: 0.8258, Validation Accuracy: 0.7933
+Degree: 3, Training Accuracy: 0.8287, Validation Accuracy: 0.7877
+Degree: 4, Training Accuracy: 0.8301, Validation Accuracy: 0.7933
+Degree: 5, Training Accuracy: 0.8315, Validation Accuracy: 0.7933
+
+

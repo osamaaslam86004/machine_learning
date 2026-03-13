@@ -1,0 +1,234 @@
+Loading Original Dtataset...
+Loading MNIST dataset...
+Dataset loaded. Training shape: (60000, 784), Test shape: (10000, 784)
+Digit 0: 5923 occurrences
+Digit 1: 6742 occurrences
+Digit 2: 5958 occurrences
+Digit 3: 6131 occurrences
+Digit 4: 5842 occurrences
+Digit 5: 5421 occurrences
+Digit 6: 5918 occurrences
+Digit 7: 6265 occurrences
+Digit 8: 5851 occurrences
+Digit 9: 5949 occurrences
+Digit 0: 9.87%
+Digit 1: 11.24%
+Digit 2: 9.93%
+Digit 3: 10.22%
+Digit 4: 9.74%
+Digit 5: 9.04%
+Digit 6: 9.86%
+Digit 7: 10.44%
+Digit 8: 9.75%
+Digit 9: 9.92%
+🌐 Downloading PCA-reduced MNIST data from Google Drive...
+Downloading...
+From (original): https://drive.google.com/uc?id=1jLwwYnD6CTPTGdu1Bub_04Co5ISO3dQH
+From (redirected): https://drive.google.com/uc?id=1jLwwYnD6CTPTGdu1Bub_04Co5ISO3dQH&confirm=t&uuid=4d6b887d-a29b-4afc-94df-1e2444422050
+To: /content/mnist_pca_0.95_no_augmented_data.npz
+100% 82.7M/82.7M [00:00<00:00, 142MB/s]
+📦 Loading PCA-reduced MNIST data from file...
+✅ Loaded PCA data. Training shape: (60000, 154), Test shape: (60000,)
+✅ Loaded PCA data. Testing shape: (10000, 154), Test shape: (10000,)
+
+ Training RandomForest Classifier (Multiclass 0-9) with OvR-strategy....:
+Fitting 3 folds for each of 6 candidates, totalling 18 fits
+[CV] END estimator__max_depth=None, estimator__n_estimators=3; total time=  35.7s
+[CV] END estimator__max_depth=None, estimator__n_estimators=3; total time=  35.8s
+[CV] END estimator__max_depth=None, estimator__n_estimators=3; total time=  35.0s
+[CV] END estimator__max_depth=None, estimator__n_estimators=4; total time=  47.0s
+[CV] END estimator__max_depth=None, estimator__n_estimators=4; total time=  45.1s
+[CV] END estimator__max_depth=None, estimator__n_estimators=4; total time=  45.4s
+[CV] END .estimator__max_depth=10, estimator__n_estimators=3; total time=  20.3s
+[CV] END .estimator__max_depth=10, estimator__n_estimators=3; total time=  19.2s
+[CV] END .estimator__max_depth=10, estimator__n_estimators=3; total time=  20.0s
+[CV] END .estimator__max_depth=10, estimator__n_estimators=4; total time=  25.7s
+[CV] END .estimator__max_depth=10, estimator__n_estimators=4; total time=  25.7s
+[CV] END .estimator__max_depth=10, estimator__n_estimators=4; total time=  26.2s
+[CV] END .estimator__max_depth=20, estimator__n_estimators=3; total time=  29.8s
+[CV] END .estimator__max_depth=20, estimator__n_estimators=3; total time=  29.8s
+[CV] END .estimator__max_depth=20, estimator__n_estimators=3; total time=  31.2s
+[CV] END .estimator__max_depth=20, estimator__n_estimators=4; total time=  40.2s
+[CV] END .estimator__max_depth=20, estimator__n_estimators=4; total time=  38.6s
+[CV] END .estimator__max_depth=20, estimator__n_estimators=4; total time=  39.7s
+Best hyperparameters found by GridSearchCV:
+{'estimator__max_depth': None, 'estimator__n_estimators': 4}
+/usr/local/lib/python3.11/dist-packages/sklearn/multiclass.py:557: RuntimeWarning: invalid value encountered in divide
+  Y /= np.sum(Y, axis=1)[:, np.newaxis]
+Best model saved to 'best_rf_ovr_train_model.joblib'
+
+ Evaluating RandomForest Classifier......:
+Accuracy: 0.8006333333333333
+Precision: 0.811105176486144
+Recall: 0.7975119522295169
+F1 Score: 0.7996197199375957
+Confusion Matrix: 
+[[5046    8   93   80   54  100  165   68  181  128]
+ [   2 6423   42   26   24   19   18   44   66   78]
+ [  53   20 4317  171  165  129  198  177  435  293]
+ [  30   13  124 4350   86  362  136  205  440  385]
+ [   8   25   69   27 4151  134  137  263  211  817]
+ [  62    7   47  262   84 3686  284  152  460  377]
+ [  41   13   54   19   42  107 5217   61  207  157]
+ [  29   49   42   40  110   42   21 5231  114  587]
+ [  41   31   92  169   92  205   85  102 4564  470]
+ [  32   28   37   80  234   66   35  259  125 5053]]
+Figure(1000x800)
+
+Classification Report for train:
+              precision    recall  f1-score   support
+
+           0       0.94      0.85      0.90      5923
+           1       0.97      0.95      0.96      6742
+           2       0.88      0.72      0.79      5958
+           3       0.83      0.71      0.77      6131
+           4       0.82      0.71      0.76      5842
+           5       0.76      0.68      0.72      5421
+           6       0.83      0.88      0.85      5918
+           7       0.80      0.83      0.82      6265
+           8       0.67      0.78      0.72      5851
+           9       0.61      0.85      0.71      5949
+
+    accuracy                           0.80     60000
+   macro avg       0.81      0.80      0.80     60000
+weighted avg       0.81      0.80      0.80     60000
+
+
+ Creating plots for worst misclassifications after Training......:
+🌐 Downloading Augmented PCA-reduced MNIST data from Google Drive...
+Downloading...
+From (original): https://drive.google.com/uc?id=1DdyLQX0joNOX98egw_P4Ib0_JbDuQy_G
+From (redirected): https://drive.google.com/uc?id=1DdyLQX0joNOX98egw_P4Ib0_JbDuQy_G&confirm=t&uuid=a300459e-11de-45de-bda9-7935deb53990
+To: /content/augmented_pca_0.99_mnist_data.npz
+100% 821M/821M [00:10<00:00, 79.5MB/s]
+📦 Loading PCA-reduced MNIST data from file...
+✅ Loaded Augmented PCA reduced data. Training shape: (300000, 345), Test shape: (300000,)
+✅ Loaded Augmented PCA reduced data. Testing shape: (10000, 345), Test shape: (10000,)
+
+ Fine-tune Random Forest Classifier:
+Fitting 3 folds for each of 6 candidates, totalling 18 fits
+[CV] END estimator__max_depth=None, estimator__n_estimators=3; total time= 7.4min
+[CV] END estimator__max_depth=None, estimator__n_estimators=3; total time= 7.2min
+[CV] END estimator__max_depth=None, estimator__n_estimators=3; total time= 7.4min
+[CV] END estimator__max_depth=None, estimator__n_estimators=4; total time=10.0min
+[CV] END estimator__max_depth=None, estimator__n_estimators=4; total time= 9.4min
+[CV] END estimator__max_depth=None, estimator__n_estimators=4; total time= 9.7min
+[CV] END .estimator__max_depth=10, estimator__n_estimators=3; total time= 3.1min
+[CV] END .estimator__max_depth=10, estimator__n_estimators=3; total time= 3.1min
+[CV] END .estimator__max_depth=10, estimator__n_estimators=3; total time= 3.2min
+[CV] END .estimator__max_depth=10, estimator__n_estimators=4; total time= 4.2min
+[CV] END .estimator__max_depth=10, estimator__n_estimators=4; total time= 4.1min
+[CV] END .estimator__max_depth=10, estimator__n_estimators=4; total time= 4.1min
+[CV] END .estimator__max_depth=20, estimator__n_estimators=3; total time= 5.0min
+[CV] END .estimator__max_depth=20, estimator__n_estimators=3; total time= 5.1min
+[CV] END .estimator__max_depth=20, estimator__n_estimators=3; total time= 5.1min
+[CV] END .estimator__max_depth=20, estimator__n_estimators=4; total time= 6.7min
+[CV] END .estimator__max_depth=20, estimator__n_estimators=4; total time= 6.8min
+[CV] END .estimator__max_depth=20, estimator__n_estimators=4; total time= 6.8min
+Best hyperparameters found by GridSearchCV:
+{'estimator__max_depth': 20, 'estimator__n_estimators': 4}
+Best model saved to 'best_rf_ovr_fine-tune_model.joblib'
+
+ Evaluating Fine-tuned Random Forest Classifier:
+Accuracy: 0.7745366666666667
+Precision: 0.7707881400820578
+Recall: 0.7711452443540219
+F1 Score: 0.7709130623884746
+Confusion Matrix: 
+[[25769    63   558   552   247   693   719   212   565   237]
+ [   33 32178   238   182   142   147   150   180   304   156]
+ [  644   233 22556  1259   642   681   877   831  1503   564]
+ [  430   223  1452 22195   381  2049   611   799  1617   898]
+ [  202   300   665   370 22086   546   577   929   863  2672]
+ [  628   150   690  2474   682 18283  1111   557  1643   887]
+ [  882   220   738   510   559  1023 24143   253   895   367]
+ [  265   479   727   522  1077   481   169 25055   538  2012]
+ [  566   331  1485  1791   921  1579   833   696 19869  1184]
+ [  331   331   570   881  3164   730   366  2082  1063 20227]]
+Figure(1200x600)
+Figure(1000x800)
+
+Classification Report for fine-tune:
+              precision    recall  f1-score   support
+
+           0       0.87      0.87      0.87     29615
+           1       0.93      0.95      0.94     33710
+           2       0.76      0.76      0.76     29790
+           3       0.72      0.72      0.72     30655
+           4       0.74      0.76      0.75     29210
+           5       0.70      0.67      0.69     27105
+           6       0.82      0.82      0.82     29590
+           7       0.79      0.80      0.80     31325
+           8       0.69      0.68      0.68     29255
+           9       0.69      0.68      0.69     29745
+
+    accuracy                           0.77    300000
+   macro avg       0.77      0.77      0.77    300000
+weighted avg       0.77      0.77      0.77    300000
+
+🌐 Downloading augmented MNIST data from Google Drive...
+Downloading...
+From (original): https://drive.google.com/uc?id=1-JtzYPd8l-kPeELqUgKEU33WPUQK_tg6
+From (redirected): https://drive.google.com/uc?id=1-JtzYPd8l-kPeELqUgKEU33WPUQK_tg6&confirm=t&uuid=4d4f1d13-390c-4cd1-88cb-d4f100f7a5cc
+To: /content/mnist_augmented_data.npz
+100% 46.4M/46.4M [00:00<00:00, 106MB/s]
+📦 Loading PCA-reduced MNIST data from file...
+✅ Loaded Augmented data. Training shape: (300000, 784), Test shape: (300000,)
+✅ Loaded Augmented data. Testing shape: (10000, 784), Test shape: (10000,)
+
+ Creating plots for worst misclassifications after Fine-Tunning...:
+count occurrences of each digit in test set
+Digit 0: 980 occurrences
+Digit 1: 1135 occurrences
+Digit 2: 1032 occurrences
+Digit 3: 1010 occurrences
+Digit 4: 982 occurrences
+Digit 5: 892 occurrences
+Digit 6: 958 occurrences
+Digit 7: 1028 occurrences
+Digit 8: 974 occurrences
+Digit 9: 1009 occurrences
+Digit 0: 9.80%
+Digit 1: 11.35%
+Digit 2: 10.32%
+Digit 3: 10.10%
+Digit 4: 9.82%
+Digit 5: 8.92%
+Digit 6: 9.58%
+Digit 7: 10.28%
+Digit 8: 9.74%
+Digit 9: 10.09%
+Making Predictions and Evaluate
+Performance Metrics on Test Set.......:
+  Accuracy: 0.8365
+  Confusion Matrix:
+ [[ 914    0    9    9    7   11   16    3   11    0]
+ [   1 1107    2    5    0    4    5    2    6    3]
+ [  17    3  838   35   23   13   17   17   50   19]
+ [  10    3   22  825    2   59    8   14   46   21]
+ [   4   12   19    9  780   12   20   18   23   85]
+ [  13    7   18   74   17  655   29   12   42   25]
+ [  23    3   16    8    5   35  846    6   12    4]
+ [   2   12   19   15   23   14    4  886    5   48]
+ [  16    5   29   46   25   50   29   18  725   31]
+ [  13   10   15   16   59   16    6   55   30  789]]
+  Classification Report:
+               precision    recall  f1-score   support
+
+           0       0.90      0.93      0.92       980
+           1       0.95      0.98      0.96      1135
+           2       0.85      0.81      0.83      1032
+           3       0.79      0.82      0.80      1010
+           4       0.83      0.79      0.81       982
+           5       0.75      0.73      0.74       892
+           6       0.86      0.88      0.87       958
+           7       0.86      0.86      0.86      1028
+           8       0.76      0.74      0.75       974
+           9       0.77      0.78      0.78      1009
+
+    accuracy                           0.84     10000
+   macro avg       0.83      0.83      0.83     10000
+weighted avg       0.84      0.84      0.84     10000
+
+Figure(1200x600)
+Figure(1000x800)

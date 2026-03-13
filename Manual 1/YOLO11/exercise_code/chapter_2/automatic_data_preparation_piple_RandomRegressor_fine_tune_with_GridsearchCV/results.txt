@@ -1,0 +1,108 @@
+Fitting 3 folds for each of 12 candidates, totalling 36 fits
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=50; total time=   2.4s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=50; total time=   2.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=50; total time=   2.6s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=100; total time=   4.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=100; total time=   4.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=100; total time=   4.8s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=150; total time=   6.2s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=150; total time=   6.9s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=median, regressor__n_estimators=150; total time=   6.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=50; total time=   2.8s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=50; total time=   2.0s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=50; total time=   2.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=100; total time=   4.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=100; total time=   4.8s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=100; total time=   4.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=150; total time=   6.8s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=150; total time=   6.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=True, preparation__num__imputer__strategy=mean, regressor__n_estimators=150; total time=   6.8s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=50; total time=   2.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=50; total time=   2.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=50; total time=   2.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=100; total time=   4.8s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=100; total time=   4.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=100; total time=   4.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=150; total time=   6.8s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=150; total time=   6.4s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=median, regressor__n_estimators=150; total time=   6.6s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=50; total time=   2.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=50; total time=   2.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=50; total time=   2.7s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=100; total time=   4.1s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=100; total time=   4.2s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=100; total time=   4.8s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=150; total time=   6.9s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=150; total time=   8.6s
+[CV] END preparation__num__attribs_adder__add_bedrooms_per_room=False, preparation__num__imputer__strategy=mean, regressor__n_estimators=150; total time=   6.4s
+Best Parameters for Training Set: {'preparation__num__attribs_adder__add_bedrooms_per_room': False, 'preparation__num__imputer__strategy': 'median', 'regressor__n_estimators': 150}
+
+Top Feature Importances BEFORE Fine-Tuning:
+num__median_income: 0.6791
+num__population_per_household: 0.3083
+cat__ocean_proximity_NEAR BAY: 0.0126
+Model rmese scores [80962.35577447 77263.49096688 77001.9651799  81144.72596483
+ 77238.45841586 81141.83618239 80914.52744034 78812.24752565
+ 75872.31734507 78390.12954667]
+Random Forest Cross-Validation Scores:
+Scores: [80962.35577447 77263.49096688 77001.9651799  81144.72596483
+ 77238.45841586 81141.83618239 80914.52744034 78812.24752565
+ 75872.31734507 78390.12954667]
+Mean: 78874.20543420559
+Standard deviation: 1919.519516508775
+Fitting 5 folds for each of 8 candidates, totalling 40 fits
+[CV] END regressor__max_features=1, regressor__n_estimators=50; total time=   2.1s
+[CV] END regressor__max_features=1, regressor__n_estimators=50; total time=   1.6s
+[CV] END regressor__max_features=1, regressor__n_estimators=50; total time=   1.5s
+[CV] END regressor__max_features=1, regressor__n_estimators=50; total time=   1.5s
+[CV] END regressor__max_features=1, regressor__n_estimators=50; total time=   1.5s
+[CV] END regressor__max_features=1, regressor__n_estimators=100; total time=   2.8s
+[CV] END regressor__max_features=1, regressor__n_estimators=100; total time=   3.5s
+[CV] END regressor__max_features=1, regressor__n_estimators=100; total time=   3.1s
+[CV] END regressor__max_features=1, regressor__n_estimators=100; total time=   2.9s
+[CV] END regressor__max_features=1, regressor__n_estimators=100; total time=   2.9s
+[CV] END regressor__max_features=1, regressor__n_estimators=150; total time=   5.0s
+[CV] END regressor__max_features=1, regressor__n_estimators=150; total time=   4.5s
+[CV] END regressor__max_features=1, regressor__n_estimators=150; total time=   4.3s
+[CV] END regressor__max_features=1, regressor__n_estimators=150; total time=   5.1s
+[CV] END regressor__max_features=1, regressor__n_estimators=150; total time=   4.3s
+[CV] END regressor__max_features=1, regressor__n_estimators=200; total time=   6.4s
+[CV] END regressor__max_features=1, regressor__n_estimators=200; total time=   5.8s
+[CV] END regressor__max_features=1, regressor__n_estimators=200; total time=   6.6s
+[CV] END regressor__max_features=1, regressor__n_estimators=200; total time=   5.8s
+[CV] END regressor__max_features=1, regressor__n_estimators=200; total time=   6.5s
+[CV] END regressor__max_features=2, regressor__n_estimators=50; total time=   1.9s
+[CV] END regressor__max_features=2, regressor__n_estimators=50; total time=   1.8s
+[CV] END regressor__max_features=2, regressor__n_estimators=50; total time=   1.8s
+[CV] END regressor__max_features=2, regressor__n_estimators=50; total time=   1.8s
+[CV] END regressor__max_features=2, regressor__n_estimators=50; total time=   1.8s
+[CV] END regressor__max_features=2, regressor__n_estimators=100; total time=   4.4s
+[CV] END regressor__max_features=2, regressor__n_estimators=100; total time=   3.6s
+[CV] END regressor__max_features=2, regressor__n_estimators=100; total time=   3.6s
+[CV] END regressor__max_features=2, regressor__n_estimators=100; total time=   4.1s
+[CV] END regressor__max_features=2, regressor__n_estimators=100; total time=   3.8s
+[CV] END regressor__max_features=2, regressor__n_estimators=150; total time=   5.4s
+[CV] END regressor__max_features=2, regressor__n_estimators=150; total time=   6.1s
+[CV] END regressor__max_features=2, regressor__n_estimators=150; total time=   5.3s
+[CV] END regressor__max_features=2, regressor__n_estimators=150; total time=   6.1s
+[CV] END regressor__max_features=2, regressor__n_estimators=150; total time=   5.4s
+[CV] END regressor__max_features=2, regressor__n_estimators=200; total time=   8.0s
+[CV] END regressor__max_features=2, regressor__n_estimators=200; total time=   7.1s
+[CV] END regressor__max_features=2, regressor__n_estimators=200; total time=   7.9s
+[CV] END regressor__max_features=2, regressor__n_estimators=200; total time=   7.5s
+[CV] END regressor__max_features=2, regressor__n_estimators=200; total time=   7.4s
+
+Top Feature Importances After Fine-Tuning:
+num__median_income: 0.6873
+num__population_per_household: 0.3124
+cat__ocean_proximity_ISLAND: 0.0003
+
+Best hyperparameters found:
+{'regressor__max_features': 1, 'regressor__n_estimators': 150}
+
+Best hyperparameters found by GridSearch Search:
+{'regressor__max_features': 1, 'regressor__n_estimators': 150}
+
+Final RMSE on the test set: 76050.06
+95% confidence interval for RMSE: [73690.24697181 78338.81287896]
+95% Confidence Interval for Test RMSE (t-dist): [73690.24697181 78338.81287896]

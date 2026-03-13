@@ -1,0 +1,37 @@
+Fitting 5 folds for each of 2187 candidates, totalling 10935 fits
+Training time: 386.3054 seconds
+
+Grid Search Results:
+Best params: {'clf__alpha': 0.001, 'clf__early_stopping': True, 'clf__eta0': 0.01, 'clf__learning_rate': 'invscaling', 'clf__loss': 'modified_huber', 'clf__max_iter': 100, 'clf__penalty': 'l1', 'clf__power_t': 0.1, 'clf__tol': 0.001}
+Precision on Validation Data: 0.725
+Recall on Validation Data: 0.6744186046511628
+Accuracy on Validation Data: 0.7757847533632287
+Best F1 score: 0.8249018067556951
+
+
+Feature Importances (SGDClassifier):
+         Feature  Importance
+20           Sex    1.021268
+4          Parch    0.585027
+0            Age   -0.253859
+15  Pclass SibSp   -0.247543
+17       SibSp^2   -0.221242
+9      Age Parch   -0.216536
+5          Age^2    0.151636
+6       Age Fare    0.149628
+8      Age SibSp    0.132829
+3          SibSp    0.124736
+2         Pclass   -0.123827
+1           Fare   -0.117932
+7     Age Pclass   -0.070838
+14      Pclass^2   -0.068478
+21      Embarked    0.068050
+16  Pclass Parch   -0.036917
+10        Fare^2    0.027861
+13    Fare Parch   -0.025161
+11   Fare Pclass    0.015431
+19       Parch^2   -0.011055
+12    Fare SibSp    0.000000
+18   SibSp Parch    0.000000
+
+Predictions saved to submission.csv

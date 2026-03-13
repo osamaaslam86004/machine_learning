@@ -1,0 +1,54 @@
+import os
+
+from data_preparation import prepare_data
+from evaluate_model import display_scores, evaluate_fine_tuned_model, evaluate_model
+from fine_tune_model import fine_tune_model
+from get_data import fetch_housing_data, load_housing_data
+from strated_dataset import create_stratified_test_set
+from train_model import train_model
+
+DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml2/master/"
+HOUSING_PATH = os.path.join("datasets", "housing")
+HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
+
+
+def main():  # Added model selection argument
+    # Fetch the data
+    fetch_housing_data(HOUSING_URL, HOUSING_PATH)
+
+    # Load the data
+    housing = load_housing_data(HOUSING_PATH)
+
+    # Create a stratified test set
+    housing, housing_labels, strat_test_set = create_stratified_test_set(housing)
+
+    # Prepare data
+    housing_prepared, full_pipeline = prepare_data(housing)
+
+    # Train model
+    model = train_model(housing_prepared, housing_labels)
+    print(f"Model results: {model}")
+
+    # Evaluate model
+    model_rmse_scores = evaluate_model(model, housing_prepared, housing_labels)
+    print(f"Model RMSE scores: {model_rmse_scores}")
+
+    # Display the cross-validation scores
+    print("SVR Cross-Validation Scores:")
+    display_scores(model_rmse_scores)
+
+    # Fine-Tune Model Using Randomized Search**
+    final_model, rnd_search = fine_tune_model(housing_prepared, housing_labels)
+    # Print the best hyperparameters found
+    print("\nBest hyperparameters found by Randomized Search:")
+    print(rnd_search.best_params_)
+
+    # Evaluate the Final Model on the Test Set
+    # evaluate fine tuned model
+    t_interval = evaluate_fine_tuned_model(final_model, full_pipeline, strat_test_set)
+    print("95% Confidence Interval for Test RMSE (t-dist):", t_interval)
+
+
+if __name__ == "__main__":
+    # Train and evaluate SVR
+    main()

@@ -1,0 +1,73 @@
+[nltk_data] Downloading package stopwords to /root/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package stopwords to /root/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+Downloading and extracting datasets...
+Downloading 20030228_easy_ham.tar.bz2...
+Downloading 20030228_spam.tar.bz2...
+Download and extraction complete.
+
+Splitting data into train and test sets...
+Total emails: 3002 — Spam ratio: 16.69%
+pre-processing pipeline and Vectorizing text data...
+Training classifier...
+Best parameters: {'alpha': 0.0001, 'loss': 'log_loss', 'penalty': 'elasticnet'}
+Best cross-validation score: 0.9575121275121274
+Evaluating classifier...
+Figure(1000x600)
+Figure(800x600)
+
+Accuracy: 0.9484193011647255
+
+Classification Report:
+              precision    recall  f1-score   support
+
+         ham       0.98      0.96      0.97       501
+        spam       0.81      0.90      0.85       100
+
+    accuracy                           0.95       601
+   macro avg       0.90      0.93      0.91       601
+weighted avg       0.95      0.95      0.95       601
+
+
+AUC: 0.973193612774451
+Figure(800x600)
+
+
+============================================================
+
+stop_words = in Countvector is now comment
+
+
+[nltk_data] Downloading package stopwords to /root/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+Downloading and extracting datasets...
+Downloading 20030228_easy_ham.tar.bz2...
+Downloading 20030228_spam.tar.bz2...
+Download and extraction complete.
+
+Splitting data into train and test sets...
+Total emails: 3002 — Spam ratio: 16.69%
+pre-processing pipeline and Vectorizing text data...
+Training classifier...
+Best parameters: {'alpha': 0.0001, 'loss': 'hinge', 'penalty': 'elasticnet'}
+Best cross-validation score: 0.9729261954261954
+Evaluating classifier...
+Figure(1000x600)
+Figure(800x600)
+
+Accuracy: 0.9667221297836939
+
+Classification Report:
+              precision    recall  f1-score   support
+
+         ham       0.99      0.97      0.98       501
+        spam       0.86      0.95      0.90       100
+
+    accuracy                           0.97       601
+   macro avg       0.93      0.96      0.94       601
+weighted avg       0.97      0.97      0.97       601
+
+
+AUC: 0.9855988023952097
+Figure(800x600)
