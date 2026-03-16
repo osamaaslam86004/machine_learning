@@ -1,0 +1,29 @@
+
+Here is the breakdown of the 18-layer structure:
+
+Initial Convolution: 1 (7x7 conv)
+Residual Blocks: 16 (8 blocks, 2 convolutions per block)
+Final FC Layer: 1 (Linear classifier)
+Total: 1 + 16 + 1 = 18 layers with parameters. 
+
+
+Building a Shift-Invariant ResNet-18 is the definitive way to apply Zhang’s research. In a standard ResNet, shift-invariance is broken in two places during 
+downsampling:The Main Path: The strided convolution 3x3, stride=2 aliases the signal.
+The Shortcut Path: The projection shortcut 1x1, stride=2 also aliases the signal.
+
+We will fix both by inserting Bin-5 BlurPool layers.
+## The Shift-Invariant ResNet Block:
+This block replaces the standard Residual Block. Notice that strides=2 is removed from the convolutions and moved to the BlurPool layer.
+
+2. Building ResNet-18 for EMNIST:
+Standard ResNet-18 is designed for 224x224 images. For 28x28 EMNIST, we remove the initial max-pooling to preserve resolution for a few more layers.
+
+## Why this is the "Ultimate" Test:
+1. Skip Connection Sync: 
+By blurring both the main path and the shortcut path, you ensure that the features being added together are spatially aligned. Without this, a 1-pixel shift could cause the shortcut and the main path to provide conflicting information.
+
+2. Deep Feature Stability: 
+ResNet-18 is deep enough that "aliasing noise" usually compounds. You should notice that your training loss becomes exceptionally smooth.
+
+3. High Precision: 
+Since you already hit 99.70% with simpler models, this ResNet-18 version is likely to be your most robust model yet, especially when dealing with "noisy" or "shaky" digit entries.

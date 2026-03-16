@@ -1,0 +1,10 @@
+SLM_f32_v1: 
+https://colab.research.google.com/drive/1ogsUISj-lBN2yMhhRrWp2JuYZrdLfSIn#scrollTo=uGd9bLazUdKl
+
+or 
+https://colab.research.google.com/drive/1ogsUISj-lBN2yMhhRrWp2JuYZrdLfSIn#scrollTo=6fd03c24
+
+
+SLM_f16_v1: 
+https://colab.research.google.com/drive/1XdPCfVEA3oRhSjv5TH4DFAfLci_AAgoa#scrollTo=1VUykSU6VFrO
+
