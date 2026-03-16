@@ -28,6 +28,3 @@ Explore the folder here:
 - The dataset and results are intended for research on brain tumor detection.
 - For more details on the methodology and usage, please refer to the project documentation or contact the repository owner.
 
----
-
-
