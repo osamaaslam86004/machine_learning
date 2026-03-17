@@ -26,7 +26,7 @@ env/
 *.jpeg
 *.gif
 *.svg
-*.png
+
 
 # System files
 .DS_Store
