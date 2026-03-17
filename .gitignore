@@ -22,11 +22,11 @@ env/
 *.mov
 *.mkv
 *.webm
-*.png
 *.jpg
 *.jpeg
 *.gif
 *.svg
+*.png
 
 # System files
 .DS_Store
