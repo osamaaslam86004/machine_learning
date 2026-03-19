@@ -1,0 +1,480 @@
+import time
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from tensorflow import keras
+from tensorflow.keras import layers, models, callbacks, regularizers, backend, losses
+from tensorflow.keras.utils import plot_model # Added plot_model
+from sklearn.metrics import (roc_curve, auc, precision_recall_curve,
+                             average_precision_score, confusion_matrix,
+                             classification_report, accuracy_score)
+from sklearn.preprocessing import label_binarize
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("osamaaslam86004/emnist-digits-balanced")
+
+print("Path to dataset files:", path)
+DATA_DIR = path
+
+# Download latest version
+# DATA_DIR = "/kaggle/input/emnist-digits-balanced"
+
+# Global access and constants
+IMG_SIZE = (28, 28)
+BATCH_SIZE = 128
+SEED = 42
+
+def get_keras_dataset():
+    print("--- Loading EMNIST Digits from local PNG folders ---")
+
+    # Global access and constants
+    global IMG_SIZE
+    global BATCH_SIZE
+    global SEED
+
+    # 1. Load TRAIN dataset
+    train_ds = tf.keras.utils.image_dataset_from_directory(
+        f"{DATA_DIR}/train",
+        validation_split=0.2,
+        subset="training",
+        seed=SEED,
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        label_mode="categorical" # Changed from 'int' to 'categorical'
+    )
+
+    val_ds = tf.keras.utils.image_dataset_from_directory(
+        f"{DATA_DIR}/train",
+        validation_split=0.2,
+        subset="validation",
+        seed=SEED,
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        label_mode="categorical" # Changed from 'int' to 'categorical'
+    )
+
+    # 2. Load TEST dataset
+    test_ds = tf.keras.utils.image_dataset_from_directory(
+        directory=f"{DATA_DIR}/test",
+        labels="inferred",
+        label_mode="categorical", # Changed from 'int' to 'categorical'
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        shuffle=False
+    )
+
+    class_names = train_ds.class_names
+    print("Class names:", class_names)
+
+    # 4. Normalization layer (NO augmentation)
+    norm_layer = layers.Normalization(axis=None)
+    # Adapt on a mapping to ensure the stats are based on [0, 1] range
+    norm_layer.adapt(
+        train_ds.map(lambda x, y: x / 255.0).take(500)
+    )
+
+    preprocessing_model = models.Sequential([
+        layers.Rescaling(1./255),
+        norm_layer
+    ], name="preprocessing_head")
+
+    # 5. Final pipeline
+    def finalize(ds, shuffle=False):
+        if shuffle:
+            ds = ds.shuffle(10000, seed=SEED)
+        return ds.prefetch(tf.data.AUTOTUNE)
+
+    train_ds = finalize(train_ds, shuffle=True)
+    val_ds = finalize(val_ds)
+    test_ds = test_ds.prefetch(tf.data.AUTOTUNE)
+
+    return train_ds, val_ds, test_ds, preprocessing_model
+
+
+# -------------------------------
+# ᐧ Blur Pooling
+# -------------------------------
+class BlurPool2D(layers.Layer):
+    """
+    Implements Richard Zhang's Anti-Aliased Pooling.
+    Steps: Max(stride 1) -> Blur -> Subsample(stride 2).
+    """
+    def __init__(self, filter_size=3, strides=2, **kwargs):
+        super(BlurPool2D, self).__init__(**kwargs)
+        self.filter_size = filter_size
+        self.strides = strides
+
+    def build(self, input_shape):
+        channels = input_shape[-1]
+
+        # Define binomial filter [1, 2, 1] for anti-aliasing
+        if self.filter_size == 3:
+            a = np.array([1., 2., 1.], dtype='float32')
+        else:
+            a = np.array([1., 1.], dtype='float32')
+
+        kernel = a[:, None] * a[None, :]
+        kernel = kernel / np.sum(kernel)
+        kernel = kernel[:, :, np.newaxis, np.newaxis]
+        kernel = np.tile(kernel, (1, 1, channels, 1))
+
+        self.blur_kernel = self.add_weight(
+            name="blur_kernel",
+            shape=kernel.shape,
+            initializer=tf.keras.initializers.Constant(kernel),
+            trainable=False
+        )
+
+    def call(self, x):
+        return tf.nn.depthwise_conv2d(
+            x, self.blur_kernel,
+            strides=[1, self.strides, self.strides, 1],
+            padding="SAME"
+        )
+
+# -------------------------------
+# ᐧ GEM Pooling
+# -------------------------------
+class GeMPooling2D(layers.Layer):
+    def __init__(self, p=3.0, trainable=True, epsilon=1e-6, **kwargs):
+        super(GeMPooling2D, self).__init__(**kwargs)
+        self.p = p
+        self.trainable = trainable
+        self.epsilon = epsilon
+
+    def build(self, input_shape):
+        self.p_param = self.add_weight(
+            name="p",
+            shape=(1, 1, 1, input_shape[-1]),
+            initializer=tf.keras.initializers.Constant(self.p),
+            trainable=self.trainable,
+            # Use a formal Keras constraint object
+            constraint=tf.keras.constraints.MinMaxNorm(min_value=1.0, max_value=10.0, rate=1.0, axis=0),
+            dtype=tf.float32
+        )
+        super(GeMPooling2D, self).build(input_shape)
+
+    def call(self, x):
+        # Ensure input is positive for pow operations
+        x = tf.maximum(x, self.epsilon)
+        pow_mean = tf.reduce_mean(tf.pow(x, self.p_param), axis=[1, 2], keepdims=True)
+        gem_out = tf.pow(pow_mean, 1.0 / self.p_param)
+        return tf.reshape(gem_out, [tf.shape(x)[0], tf.shape(x)[-1]])
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "p": self.p,
+            "trainable": self.trainable,
+            "epsilon": self.epsilon
+        })
+        return config
+
+    def compute_output_shape(self, input_shape):
+        # GeM collapses spatial dimensions, leaving only (batch, channels)
+        return (input_shape[0], input_shape[-1])
+
+
+def build_constraint_gem_cnn(preprocessing_layer):
+    # Standard L2 for Conv layers
+    conv_reg = regularizers.l2(1e-4)
+    # Simplified from L1_L2 as GeM is lower-dim
+    dense_reg = regularizers.l1(1e-4)
+
+    # 1. Define the Input tensor (None, None for variable resolution)
+    inputs = layers.Input(shape=(None, None, 1))
+
+    # 2. CALL the preprocessing layer on the inputs to get the first tensor 'x'
+    x = preprocessing_layer(inputs)
+
+    # --- Block 1 ---
+    x = layers.Conv2D(16, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=conv_reg)(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation('relu')(x)
+
+    # Richard Zhang's BlurPooling Downsampling
+    # Evaluate Max without losing spatial resolution (stride 1)
+    x = layers.MaxPooling2D(pool_size=(2, 2), strides=1, padding='same')(x)
+    # Apply Blur + Subsample (stride 2)
+    x = BlurPool2D(filter_size=3, strides=2)(x)
+
+    x = layers.Dropout(0.1)(x)
+
+    # --- Block 2 ---
+    x = layers.Conv2D(32, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=conv_reg)(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation('relu')(x)
+
+    # Richard Zhang's BlurPooling Downsampling
+    # Evaluate Max without losing spatial resolution (stride 1)
+    x = layers.MaxPooling2D(pool_size=(2, 2), strides=1, padding='same')(x)
+    # Apply Blur + Subsample (stride 2)
+    x = BlurPool2D(filter_size=3, strides=2)(x)
+
+    x = layers.Dropout(0.2)(x)
+
+    # --- Block 3 ---
+    x = layers.Conv2D(64, (3, 3), name='last_con2d_layer', padding='same', kernel_initializer='he_normal', kernel_regularizer=conv_reg)(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation('relu')(x)
+
+    x = layers.Dropout(0.3)(x)
+
+    # --- GeM Pooling Layer ---
+    # Replaces SPP. Output shape will be (batch, 32)
+    x = GeMPooling2D(p=3.0, name='gem_layer')(x)
+
+    #  post-global batch normalization: Increase model performance
+    x = layers.BatchNormalization()(x)
+
+    # --- Regularized Dense Head ---
+    x = layers.Dense(32, kernel_initializer='he_normal', kernel_regularizer=dense_reg)(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation('relu')(x)
+    x = layers.Dropout(0.3)(x)
+    outputs = layers.Dense(10, activation='softmax')(x)
+
+    # 3. Create and Compile Model
+    model = models.Model(inputs=inputs, outputs=outputs)
+
+    # Instantiate the loss function with label smoothing
+    # Set from_logits=True if your model's final layer outputs logits (raw scores),
+    # or False if it outputs probabilities (after a Softmax activation)
+    smoothed_cce_loss = tf.keras.losses.CategoricalCrossentropy(
+        from_logits=False,
+        label_smoothing=0.1
+    )
+
+    # Define the learning rate schedule
+    lr_schedule = tf.keras.optimizers.schedules.CosineDecay(
+        initial_learning_rate=0.001,
+        decay_steps=300000
+    )
+
+    # Compile the model with an optimizer and the learning rate schedule
+    model.compile(
+        optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule),
+        loss=smoothed_cce_loss,
+        metrics=['accuracy']
+    )
+
+    return model
+
+
+# Initialize
+train_data, val_data, test_data, prep_layer = get_keras_dataset()
+model = build_constraint_gem_cnn(prep_layer)
+model.summary()
+
+# Callbacks
+class ThroughputPerEpoch(callbacks.Callback):
+    def on_epoch_begin(self, epoch, logs=None):
+        self.epoch_start = time.time()
+    def on_epoch_end(self, epoch, logs=None):
+        global BATCH_SIZE
+        duration = time.time() - self.epoch_start
+        throughput = len(train_data) * BATCH_SIZE / duration
+        print(f" - Epoch {epoch+1} Time: {duration:.2f}s | Throughput: {throughput:.2f} img/sec")
+
+class ShiftConsistencyCallback(tf.keras.callbacks.Callback):
+    def __init__(self, validation_data):
+        super().__init__()
+        self.validation_data = validation_data
+
+    def on_epoch_end(self, epoch, logs=None):
+        total_matches = 0
+        total_samples = 0
+
+        for images, _ in self.validation_data:
+            # 1. Get predictions for original images
+            preds_orig = self.model.predict(images, verbose=0)
+            labels_orig = np.argmax(preds_orig, axis=1)
+
+            # 2. Create shifted images (Shift 1 pixel right/horizontally)
+            # axis=2 corresponds to the width dimension in (batch, height, width, channels)
+            images_shifted = tf.roll(images, shift=1, axis=2)
+
+            # 3. Get predictions for shifted images
+            preds_shifted = self.model.predict(images_shifted, verbose=0)
+            labels_shifted = np.argmax(preds_shifted, axis=1)
+
+            # 4. Compare and aggregate
+            total_matches += np.sum(labels_orig == labels_shifted)
+            total_samples += tf.shape(images)[0].numpy()
+
+        consistency = total_matches / total_samples
+        print(f" - Epoch {epoch+1} Shift Consistency (1px): {consistency * 100:.2f}%")
+
+        # Optionally add it to logs so it can be viewed in history or TensorBoard
+        if logs is not None:
+            logs['val_shift_consistency'] = consistency
+
+early_stop = callbacks.EarlyStopping(monitor='val_loss', patience=6, restore_best_weights=True, verbose=1)
+checkpoint = callbacks.ModelCheckpoint("emnist_best_model.keras", monitor='val_accuracy', save_best_only=True, mode='max', verbose=1)
+time_callback = ThroughputPerEpoch()
+# Initialize Shift Consistency callback
+shift_callback = ShiftConsistencyCallback(val_data)
+
+# Train
+# Record the start time
+start_time = time.perf_counter() #
+
+# Train
+history = model.fit(
+    train_data,
+    epochs=1,
+    validation_data=val_data,
+    callbacks=[early_stop, checkpoint, time_callback, shift_callback],
+    verbose=1
+)
+
+# Record the end time
+end_time = time.perf_counter() #
+
+test_loss, test_acc = model.evaluate(test_data, verbose=2)
+print(f"\nTest accuracy: {test_acc:.4f}")
+
+# 1. Access the GeM layer from your trained model
+# Assuming the layer is named 'ge_m_pooling2d'
+gem_layer = model.get_layer('gem_layer')
+# This weight array has the shape (1, 1, 1, 128).
+# Calling .flatten() converts that 4D array into a simple 1D array of 128 values,
+# which is exactly what your bar chart needs for plotting
+p_values = gem_layer.get_weights()[0].flatten()
+
+
+# ===============================================================
+#  STEP 8: Plot Accuracy , Loss, And p-Values (GeM),
+# and Confusion Matrix, ROC-Curve, PR-Curve
+# ==============================================================
+def plot_evaluation_curves(y_true_labels, y_probs, y_test_pred, class_names, set_name="Test"):
+  # Plotting
+  plt.figure(figsize=(12,4))
+  plt.subplot(1,2,1)
+  plt.plot(history.history['accuracy'], label='Train Acc')
+  plt.plot(history.history['val_accuracy'], label='Val Acc')
+  plt.title('Accuracy over Epochs')
+  plt.legend()
+
+  plt.subplot(1,2,2)
+  plt.plot(history.history['loss'], label='Train Loss')
+  plt.plot(history.history['val_loss'], label='Val Loss')
+  plt.title('Loss over Epochs')
+  plt.legend()
+  plt.tight_layout()
+  plt.show()
+
+  # 2. Plot the distribution of p across the 64 channels
+  plt.figure(figsize=(10,8))
+  plt.bar(range(len(p_values)), p_values, color='skyblue')
+  plt.axhline(y=1.0, color='r', linestyle='--', label='Average Pooling (p=1)')
+  plt.axhline(y=3.0, color='g', linestyle='--', label='Starting p=3')
+  plt.title("Learned p-values per Channel")
+  plt.xlabel("Channel Index")
+  plt.ylabel("p value")
+  plt.legend()
+  plt.show()
+
+  plt.figure(figsize=(10,8))
+  # Confusion Matrix
+  sns.heatmap(confusion_matrix(y_test_true, y_test_pred),
+              annot=True,
+              fmt='d',
+              cmap='Blues',
+              xticklabels=target_names,
+              yticklabels=target_names)
+  plt.title('Confusion Matrix (Test Set)')
+  plt.xlabel('Predicted Label')
+  plt.ylabel('True Label')
+  plt.show()
+
+  # ROC Curve and Precision-Recall Curve
+  n_classes = len(class_names)
+  y_true_bin = label_binarize(y_true_labels, classes=range(n_classes))
+
+  plt.figure(figsize=(12, 6))
+  plt.subplot(1, 2, 1)
+  for i in range(n_classes):
+      fpr, tpr, _ = roc_curve(y_true_bin[:, i], y_probs[:, i])
+      plt.plot(fpr, tpr, label=f'Class {class_names[i]} (AUC = {auc(fpr, tpr):.3f})')
+  plt.plot([0, 1], [0, 1], 'k--')
+  plt.title(f'ROC Curves - {set_name}')
+  plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+
+  plt.subplot(1, 2, 2)
+  for i in range(n_classes):
+      precision, recall, _ = precision_recall_curve(y_true_bin[:, i], y_probs[:, i])
+      plt.plot(recall, precision, label=f'Class {class_names[i]}')
+  plt.title(f'PR Curves - {set_name}')
+  plt.tight_layout()
+  plt.show()
+
+# measure precise latency
+def measure_precise_latency(model, input_shape=(28, 28, 1), num_samples=100):
+    """
+    Measures the inference latency of a single model.predict() call.
+    Environment: Optimized for Kaggle GPU (T4/P100).
+    """
+    # 1. Create a single dummy input tensor
+    dummy_input = np.random.rand(1, *input_shape).astype(np.float32)
+
+    print(f"\n--- Starting Latency Measurement ({num_samples} iterations) ---")
+
+    # 2. WARM-UP: Essential for GPU initialization
+    for _ in range(10):
+        _ = model.predict(dummy_input, verbose=0)
+
+    # 3. MEASUREMENT LOOP: Using high-precision perf_counter
+    latencies = []
+    for _ in range(num_samples):
+        start_time = time.perf_counter()
+        _ = model.predict(dummy_input, verbose=0)
+        end_time = time.perf_counter()
+        latencies.append(end_time - start_time)
+
+    # 4. CALCULATE STATS
+    avg_latency_ms = (sum(latencies) / num_samples) * 1000
+    p95_latency_ms = np.percentile(latencies, 95) * 1000
+
+    print(f"Average Inference Latency: {avg_latency_ms:.2f} ms")
+    print(f"P95 Latency (Tail Latency): {p95_latency_ms:.2f} ms")
+    return avg_latency_ms
+
+# Evaluation logic
+def get_actual_and_probabilities(dataset):
+    y_true = []
+    y_probs = []
+    for images, labels in dataset:
+        preds = model.predict(images, verbose=0)
+        y_probs.extend(preds)
+        # Convert one-hot encoded labels to integer labels
+        y_true.extend(np.argmax(labels.numpy(), axis=1))
+    return np.array(y_true), np.array(y_probs)
+
+
+# Final Evaluation
+# 1. Execute the improved precise latency measurement
+measure_precise_latency(model, input_shape=(28, 28, 1))
+
+# 2. Continue with dataset evaluation
+target_names = [str(i) for i in range(10)]
+y_test_true, y_test_probs = get_actual_and_probabilities(test_data)
+
+# Get predicted labels for the test set
+y_test_pred = np.argmax(y_test_probs, axis=1)
+
+# 1. Print classification report
+print("Classification Report (Test Set):")
+print(classification_report(y_test_true, y_test_pred, target_names=target_names))
+
+# 2. Print accuracy on test set
+accuracy = accuracy_score(y_test_true, y_test_pred)
+print(f"\nAccuracy (Test Set): {accuracy:.4f}")
+
+# 3. Plot Evaluation curve for test set
+plot_evaluation_curves(y_test_true, y_test_probs, y_test_pred, target_names, set_name="Test")
