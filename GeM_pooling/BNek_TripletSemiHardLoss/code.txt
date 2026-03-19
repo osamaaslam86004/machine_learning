@@ -10,9 +10,16 @@ from sklearn.metrics import (roc_curve, auc, precision_recall_curve,
                              average_precision_score, confusion_matrix,
                              classification_report, accuracy_score)
 from sklearn.preprocessing import label_binarize
+import kagglehub
 
 # Download latest version
-DATA_DIR = "/kaggle/input/emnist-digits-balanced"
+path = kagglehub.dataset_download("osamaaslam86004/emnist-digits-balanced")
+
+print("Path to dataset files:", path)
+DATA_DIR = path
+
+# Download latest version
+# DATA_DIR = "/kaggle/input/emnist-digits-balanced"
 
 # Global access and constants
 IMG_SIZE = (28, 28)
@@ -36,7 +43,7 @@ def get_keras_dataset():
         color_mode="grayscale",
         image_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
-        label_mode="categorical" # Changed from 'int' to 'categorical'
+        label_mode="int" # Changed from 'categorical' to 'int'
     )
 
     val_ds = tf.keras.utils.image_dataset_from_directory(
@@ -47,14 +54,14 @@ def get_keras_dataset():
         color_mode="grayscale",
         image_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
-        label_mode="categorical" # Changed from 'int' to 'categorical'
+        label_mode="int" # Changed from 'categorical' to 'int'
     )
 
     # 2. Load TEST dataset
     test_ds = tf.keras.utils.image_dataset_from_directory(
         directory=f"{DATA_DIR}/test",
         labels="inferred",
-        label_mode="categorical", # Changed from 'int' to 'categorical'
+        label_mode="int", # Changed from 'categorical' to 'int'
         color_mode="grayscale",
         image_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
@@ -71,9 +78,23 @@ def get_keras_dataset():
         train_ds.map(lambda x, y: x / 255.0).take(500)
     )
 
+    shift_val = 1.0 / 28
+
+    # Fixed 1-pixel translation layer
+    translation_layer = layers.RandomTranslation(
+        height_factor=(shift_val, shift_val), # Fixed at +1 pixel vertically
+        width_factor=(shift_val, shift_val),  # Fixed at +1 pixel horizontally
+        fill_mode='constant',
+        fill_value=0.0,
+        seed=SEED
+    )
+
     preprocessing_model = models.Sequential([
         layers.Rescaling(1./255),
-        norm_layer
+        norm_layer,
+        layers.RandomRotation(0.3),
+        translation_layer,
+        layers.RandomZoom(0.02)
     ], name="preprocessing_head")
 
     # 5. Final pipeline
@@ -88,47 +109,6 @@ def get_keras_dataset():
 
     return train_ds, val_ds, test_ds, preprocessing_model
 
-
-# -------------------------------
-# ᐧ Blur Pooling
-# -------------------------------
-class BlurPool2D(layers.Layer):
-    """
-    Implements Richard Zhang's Anti-Aliased Pooling.
-    Steps: Max(stride 1) -> Blur -> Subsample(stride 2).
-    """
-    def __init__(self, filter_size=3, strides=2, **kwargs):
-        super(BlurPool2D, self).__init__(**kwargs)
-        self.filter_size = filter_size
-        self.strides = strides
-
-    def build(self, input_shape):
-        channels = input_shape[-1]
-
-        # Define binomial filter [1, 2, 1] for anti-aliasing
-        if self.filter_size == 3:
-            a = np.array([1., 2., 1.], dtype='float32')
-        else:
-            a = np.array([1., 1.], dtype='float32')
-
-        kernel = a[:, None] * a[None, :]
-        kernel = kernel / np.sum(kernel)
-        kernel = kernel[:, :, np.newaxis, np.newaxis]
-        kernel = np.tile(kernel, (1, 1, channels, 1))
-
-        self.blur_kernel = self.add_weight(
-            name="blur_kernel",
-            shape=kernel.shape,
-            initializer=tf.keras.initializers.Constant(kernel),
-            trainable=False
-        )
-
-    def call(self, x):
-        return tf.nn.depthwise_conv2d(
-            x, self.blur_kernel,
-            strides=[1, self.strides, self.strides, 1],
-            padding="SAME"
-        )
 
 # -------------------------------
 # ᐧ GEM Pooling
@@ -173,103 +153,126 @@ class GeMPooling2D(layers.Layer):
         return (input_shape[0], input_shape[-1])
 
 
-def build_constraint_gem_cnn(preprocessing_layer):
-    # Standard L2 for Conv layers
+def triplet_semi_hard_loss(labels, embeddings, margin=0.3):
+    """
+    Custom implementation of Triplet Semi-Hard Loss.
+    labels: [batch_size, 1] or [batch_size]
+    embeddings: [batch_size, embedding_dim] (These are the GeM features)
+    """
+    # 1. Compute Pairwise Distance Matrix: dist(i, j) = ||e_i - e_j||^2
+    # Using the formula: ||a-b||^2 = ||a||^2 - 2ab + ||b||^2
+    squared_norm = tf.reduce_sum(tf.square(embeddings), axis=1, keepdims=True)
+    distances = squared_norm - 2.0 * tf.matmul(embeddings, embeddings, transpose_b=True) + tf.transpose(squared_norm)
+    distances = tf.maximum(distances, 0.0) # Avoid negative numbers due to float errors
+
+    # 2. Build masks for Positive and Negative pairs
+    labels = tf.reshape(labels, [-1, 1])
+    mask_pos = tf.equal(labels, tf.transpose(labels))
+    mask_pos = tf.cast(mask_pos, tf.float32)
+
+    mask_neg = tf.logical_not(tf.equal(labels, tf.transpose(labels)))
+    mask_neg = tf.cast(mask_neg, tf.float32)
+
+    # 3. Calculate distances
+    # For each anchor, find the distance to all positives
+    anchor_positive_dist = tf.multiply(mask_pos, distances)
+    # Get the hardest positive (max distance) for each anchor
+    hardest_positive_dist = tf.reduce_max(anchor_positive_dist, axis=1)
+
+    # For each anchor, find the semi-hard negatives
+    # Semi-hard: d(a,p) < d(a,n) < d(a,p) + margin
+    # To simplify for training, we often just use "Hard Negative Mining":
+    # (Select the smallest distance where labels are different)
+    max_dist = tf.reduce_max(distances)
+    negative_dist = distances + max_dist * (1.0 - mask_neg) # Push positive distances to infinity
+    hardest_negative_dist = tf.reduce_min(negative_dist, axis=1)
+
+    # 4. Final Loss
+    loss = tf.maximum(hardest_positive_dist - hardest_negative_dist + margin, 0.0)
+    return tf.reduce_mean(loss)
+
+
+# Wrap the custom function to match Keras Loss API
+class TripletSemiHardLoss(tf.keras.losses.Loss):
+    def __init__(self, margin=0.3, name="triplet_loss"):
+        super().__init__(name=name)
+        self.margin = margin
+
+    def call(self, y_true, y_pred):
+        # y_true will be the labels (e.g., person IDs)
+        # y_pred will be the 'gem_features'
+        return triplet_semi_hard_loss(y_true, y_pred, margin=self.margin)
+
+def build_bnneck_model(preprocessing_layer):
     conv_reg = regularizers.l2(1e-4)
-    # Simplified from L1_L2 as GeM is lower-dim
-    dense_reg = regularizers.l1(1e-4)
 
-    # 1. Define the Input tensor (None, None for variable resolution)
     inputs = layers.Input(shape=(None, None, 1))
-
-    # 2. CALL the preprocessing layer on the inputs to get the first tensor 'x'
     x = preprocessing_layer(inputs)
 
-    # --- Block 1 ---
-    x = layers.Conv2D(16, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=conv_reg)(x)
-    x = layers.BatchNormalization()(x)
-    x = layers.Activation('relu')(x)
+    # --- Feature Extraction Backbone ---
+    # (Simplified representation of your existing blocks)
+    x = layers.Conv2D(16, (3, 3), padding='same', activation='relu')(x)
+    x = layers.Conv2D(32, (3, 3), padding='same', activation='relu')(x)
+    x = layers.Conv2D(64, (3, 3), padding='same', activation='relu')(x)
 
-    # Richard Zhang's BlurPooling Downsampling
-    # Evaluate Max without losing spatial resolution (stride 1)
-    x = layers.MaxPooling2D(pool_size=(2, 2), strides=1, padding='same')(x)
-    # Apply Blur + Subsample (stride 2)
-    x = BlurPool2D(filter_size=3, strides=2)(x)
-
-    x = layers.Dropout(0.1)(x)
-
-    # --- Block 2 ---
-    x = layers.Conv2D(32, (3, 3), padding='same', kernel_initializer='he_normal', kernel_regularizer=conv_reg)(x)
-    x = layers.BatchNormalization()(x)
-    x = layers.Activation('relu')(x)
-
-    # Richard Zhang's BlurPooling Downsampling
-    # Evaluate Max without losing spatial resolution (stride 1)
-    x = layers.MaxPooling2D(pool_size=(2, 2), strides=1, padding='same')(x)
-    # Apply Blur + Subsample (stride 2)
-    x = BlurPool2D(filter_size=3, strides=2)(x)
-
-    x = layers.Dropout(0.2)(x)
-
-    # --- Block 3 ---
-    x = layers.Conv2D(64, (3, 3), name='last_con2d_layer', padding='same', kernel_initializer='he_normal', kernel_regularizer=conv_reg)(x)
-    x = layers.BatchNormalization()(x)
-    x = layers.Activation('relu')(x)
-
-    x = layers.Dropout(0.3)(x)
-
-    # --- GeM Pooling Layer ---
-    # Output shape: (batch, channels) - in your case (batch, 64)
-    x = GeMPooling2D(p=3.0, name='gem_layer')(x)
+    # --- GeM Pooling ---
+    # Output: (batch, 64)
+    raw_gem_feat = GeMPooling2D(p=3.0, name='raw_gem_embedding_layer')(x)
+    # L2 Normalize for Triplet Loss (Required by your triplet.py)
+    # This ensures embeddings are on a unit hypersphere [cite: 8, 39, 46]
+    global_feat = layers.Lambda(
+        lambda x: tf.math.l2_normalize(x, axis=1),
+        name='gem_features'
+    )(raw_gem_feat)
 
     # -----------------------------------------------------------
     # BNNeck Implementation
     # -----------------------------------------------------------
-    # 1. The Triplet Loss would typically be calculated on 'x' here
-    # 2. Add BN layer (the "Neck")
-    x = layers.BatchNormalization(name='bn_neck')(x)
-    
-    # 3. The Dense layer (Classifier)
-    # IMPORTANT: The paper suggests using NO BIAS in the FC layer 
-    # when following a BN layer to avoid redundancy and improve stability.
-    outputs = layers.Dense(
-        10, 
-        use_bias=False, 
-        activation='softmax', 
-        name='classifier_head'
-    )(x)
+    # 1. 'global_feat' is used for Triplet Loss (Euclidean space)
 
-    # -----------------------------------------------------------
-    # 3. Create and Compile Model
-    model = models.Model(inputs=inputs, outputs=outputs)
+    # 2. The BN layer "Neck"
+    # We set center=True, scale=True as per the TMM 2020 paper
+    bn_feat = layers.BatchNormalization(name='bn_neck')(raw_gem_feat)
 
+    # 3. Classifier Head for ID Loss (Cosine space)
+    # use_bias=False is crucial here
+    probabilities = layers.Dense(
+        10,
+        use_bias=False,
+        activation='softmax',
+        name='id_loss_output'
+    )(bn_feat)
+
+    # 4. Create Model with TWO outputs
+    # This allows us to pass global_feat to Triplet Loss
+    # and probabilities to CategoricalCrossentropy
+    model = models.Model(inputs=inputs, outputs=[global_feat, probabilities])
+
+    # 2. Define the ID (Classification) Loss
     # Instantiate the loss function with label smoothing
     # Set from_logits=True if your model's final layer outputs logits (raw scores),
     # or False if it outputs probabilities (after a Softmax activation)
-    smoothed_cce_loss = tf.keras.losses.CategoricalCrossentropy(
-        from_logits=False,
-        label_smoothing=0.1
-    )
+    id_loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(name='id_loss')
 
-    # Define the learning rate schedule
-    lr_schedule = tf.keras.optimizers.schedules.CosineDecay(
-        initial_learning_rate=0.001,
-        decay_steps=300000
-    )
-
-    # Compile the model with an optimizer and the learning rate schedule
+    # 3. Compile the Model
+    # Assuming your model outputs are named 'gem_features' and 'id_loss_output'
     model.compile(
-        optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule),
-        loss=smoothed_cce_loss,
-        metrics=['accuracy']
+        optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+        loss={
+            'gem_features': TripletSemiHardLoss(margin=0.3),
+            'id_loss_output': id_loss_fn
+        },
+        loss_weights={
+            'gem_features': 1.0,
+            'id_loss_output': 1.0
+        },
+        metrics={'id_loss_output': 'accuracy'}
     )
-
     return model
-
 
 # Initialize
 train_data, val_data, test_data, prep_layer = get_keras_dataset()
-model = build_constraint_gem_cnn(prep_layer)
+model = build_bnneck_model(prep_layer)
 model.summary()
 
 # Callbacks
@@ -293,7 +296,8 @@ class ShiftConsistencyCallback(tf.keras.callbacks.Callback):
 
         for images, _ in self.validation_data:
             # 1. Get predictions for original images
-            preds_orig = self.model.predict(images, verbose=0)
+            # Model now returns two outputs: [global_feat, probabilities]
+            _, preds_orig = self.model.predict(images, verbose=0)
             labels_orig = np.argmax(preds_orig, axis=1)
 
             # 2. Create shifted images (Shift 1 pixel right/horizontally)
@@ -301,7 +305,7 @@ class ShiftConsistencyCallback(tf.keras.callbacks.Callback):
             images_shifted = tf.roll(images, shift=1, axis=2)
 
             # 3. Get predictions for shifted images
-            preds_shifted = self.model.predict(images_shifted, verbose=0)
+            _, preds_shifted = self.model.predict(images_shifted, verbose=0)
             labels_shifted = np.argmax(preds_shifted, axis=1)
 
             # 4. Compare and aggregate
@@ -315,11 +319,30 @@ class ShiftConsistencyCallback(tf.keras.callbacks.Callback):
         if logs is not None:
             logs['val_shift_consistency'] = consistency
 
-early_stop = callbacks.EarlyStopping(monitor='val_loss', patience=6, restore_best_weights=True, verbose=1)
-checkpoint = callbacks.ModelCheckpoint("emnist_best_model.keras", monitor='val_accuracy', save_best_only=True, mode='max', verbose=1)
+# Option 1: Total Loss
+# early_stop = callbacks.EarlyStopping(monitor='val_loss', patience=6,
+#                                      restore_best_weights=True, verbose=1)
+# Option 2:Monitor the validation accuracy of the ID/Classification branch
+early_stop = callbacks.EarlyStopping(patience=6, restore_best_weights=True, 
+                                     mode='max', # Use 'max' for accuracy
+                                     verbose=1,
+                                     monitor='val_id_loss_output_accuracy',
+)
+checkpoint = callbacks.ModelCheckpoint("emnist_best_model.keras", 
+                                       monitor='val_id_loss_output_accuracy',
+                                       save_best_only=True, mode='max', verbose=1)
 time_callback = ThroughputPerEpoch()
 # Initialize Shift Consistency callback
 shift_callback = ShiftConsistencyCallback(val_data)
+
+def map_dual_labels(image, label):
+    # Map the single integer label to both output layers
+    return image, {'gem_features': label, 'id_loss_output': label}
+
+# Apply this to your datasets
+train_data = train_data.map(map_dual_labels)
+val_data = val_data.map(map_dual_labels)
+test_data = test_data.map(map_dual_labels)
 
 # Train
 # Record the start time
@@ -337,17 +360,13 @@ history = model.fit(
 # Record the end time
 end_time = time.perf_counter() #
 
-test_loss, test_acc = model.evaluate(test_data, verbose=2)
-print(f"\nTest accuracy: {test_acc:.4f}")
-
 # 1. Access the GeM layer from your trained model
 # Assuming the layer is named 'ge_m_pooling2d'
-gem_layer = model.get_layer('gem_layer')
-# This weight array has the shape (1, 1, 1, 128).
+gem_layer = model.get_layer('raw_gem_embedding_layer') # Changed to 'gem_features' for BNNeck model
+# This weight array has the shape (1, 1, 1, 64).
 # Calling .flatten() converts that 4D array into a simple 1D array of 128 values,
 # which is exactly what your bar chart needs for plotting
 p_values = gem_layer.get_weights()[0].flatten()
-
 
 # ===============================================================
 #  STEP 8: Plot Accuracy , Loss, And p-Values (GeM),
@@ -357,15 +376,23 @@ def plot_evaluation_curves(y_true_labels, y_probs, y_test_pred, class_names, set
   # Plotting
   plt.figure(figsize=(12,4))
   plt.subplot(1,2,1)
-  plt.plot(history.history['accuracy'], label='Train Acc')
-  plt.plot(history.history['val_accuracy'], label='Val Acc')
+  plt.plot(history.history['id_loss_output_accuracy'], label='Train Acc')
+  plt.plot(history.history['val_id_loss_output_accuracy'], label='Val Acc')
   plt.title('Accuracy over Epochs')
   plt.legend()
 
   plt.subplot(1,2,2)
-  plt.plot(history.history['loss'], label='Train Loss')
-  plt.plot(history.history['val_loss'], label='Val Loss')
-  plt.title('Loss over Epochs')
+  # 1. Plot Classification (ID) Loss
+  plt.plot(history.history['id_loss_output_loss'], label='Train ID Loss')
+  plt.plot(history.history['val_id_loss_output_loss'], label='Val ID Loss')
+  # 2. Plot Triplet Loss
+  plt.plot(history.history['gem_features_loss'], label='Train Triplet Loss')
+  plt.plot(history.history['val_gem_features_loss'], label='Val Triplet Loss')
+  # 3. Plot Combined Total Loss
+  plt.plot(history.history['loss'], label='Total Combined Loss', linestyle='--')
+  plt.title('Loss Components over Epochs')
+  plt.ylabel('Loss Value')
+  plt.xlabel('Epoch')
   plt.legend()
   plt.tight_layout()
   plt.show()
@@ -434,7 +461,8 @@ def measure_precise_latency(model, input_shape=(28, 28, 1), num_samples=100):
     latencies = []
     for _ in range(num_samples):
         start_time = time.perf_counter()
-        _ = model.predict(dummy_input, verbose=0)
+        # The model now returns two outputs, we only need the probabilities for latency
+        _, _ = model.predict(dummy_input, verbose=0)
         end_time = time.perf_counter()
         latencies.append(end_time - start_time)
 
@@ -450,13 +478,15 @@ def measure_precise_latency(model, input_shape=(28, 28, 1), num_samples=100):
 def get_actual_and_probabilities(dataset):
     y_true = []
     y_probs = []
-    for images, labels in dataset:
-        preds = model.predict(images, verbose=0)
+    for images, labels_dict in dataset:
+        # labels_dict is {'gem_features': label, 'id_loss_output': label}
+        # extract the integer label from one of the keys
+        labels = labels_dict['id_loss_output']
+        # The model returns two outputs: [global_feat, probabilities]
+        _, preds = model.predict(images, verbose=0)
         y_probs.extend(preds)
-        # Convert one-hot encoded labels to integer labels
-        y_true.extend(np.argmax(labels.numpy(), axis=1))
+        y_true.extend(labels.numpy())
     return np.array(y_true), np.array(y_probs)
-
 
 # Final Evaluation
 # 1. Execute the improved precise latency measurement
@@ -474,8 +504,15 @@ print("Classification Report (Test Set):")
 print(classification_report(y_test_true, y_test_pred, target_names=target_names))
 
 # 2. Print accuracy on test set
-accuracy = accuracy_score(y_test_true, y_test_pred)
-print(f"\nAccuracy (Test Set): {accuracy:.4f}")
+# The order is: [total_loss, gem_features_loss, id_loss_output_loss, id_loss_output_accuracy]
+results = model.evaluate(test_data, verbose=2)
+total_loss = results[0]
+gem_loss = results[1]
+id_loss = results[2]
+test_acc = results[3]
+
+print(f"\nTest Accuracy: {test_acc:.4f}")
+print(f"Total Test Loss: {total_loss:.4f}")
 
 # 3. Plot Evaluation curve for test set
 plot_evaluation_curves(y_test_true, y_test_probs, y_test_pred, target_names, set_name="Test")
