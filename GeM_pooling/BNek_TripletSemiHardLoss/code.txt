@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from tensorflow import keras
+import tensorflow.keras.backend as K
 from tensorflow.keras import layers, models, callbacks, regularizers, backend, losses
 from tensorflow.keras.utils import plot_model # Added plot_model
 from sklearn.metrics import (roc_curve, auc, precision_recall_curve,
@@ -25,6 +26,10 @@ DATA_DIR = path
 IMG_SIZE = (28, 28)
 BATCH_SIZE = 128
 SEED = 42
+# Define parameters based on the paper
+TARGET_LR = 3.5e-4
+WARMUP_EPOCHS = 10
+
 
 def get_keras_dataset():
     print("--- Loading EMNIST Digits from local PNG folders ---")
@@ -208,7 +213,7 @@ class TripletSemiHardLoss(tf.keras.losses.Loss):
 
     def get_config(self):
         """
-        Returns the config dictionary for the loss. 
+        Returns the config dictionary for the loss.
         This is required for saving and loading models.
         """
         config = super().get_config()
@@ -296,6 +301,42 @@ model = build_bnneck_model(prep_layer)
 model.summary()
 
 # Callbacks
+def lr_schedule_bottleneck(epoch):
+    target_lr = 3.5e-4
+    warmup_epochs = 10
+    
+    # 1. Linear Warmup (Epoch 0-9)
+    if epoch < warmup_epochs:
+        initial_lr = target_lr / 10
+        return initial_lr + (target_lr - initial_lr) * (epoch / warmup_epochs)
+    
+    # 2. MultiStep Decay Milestones
+    # Adjusted for EMNIST's faster convergence
+    if epoch < 25:
+        return target_lr
+    elif epoch < 40:
+        return target_lr * 0.1  # First decay (10%)
+    else:
+        return target_lr * 0.01 # Second decay (1%)
+
+# Wrap it in a Keras Callback
+reduce_lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule_bottleneck, verbose=1)
+
+
+# 1. Custom Warmup Callback (Matches Paper's Linear Growth)
+class LinearWarmup(tf.keras.callbacks.Callback):
+    def __init__(self, target_lr, warmup_epochs):
+        self.target_lr = target_lr
+        self.warmup_epochs = warmup_epochs
+        self.initial_lr = target_lr / 10 # Start at 1/10th of target
+
+    def on_epoch_begin(self, epoch, logs=None):
+        if epoch < self.warmup_epochs:
+            # Linear interpolation: lr = start + (target-start) * (current/total)
+            new_lr = self.initial_lr + (self.target_lr - self.initial_lr) * (epoch / self.warmup_epochs)
+            K.set_value(self.model.optimizer.lr, new_lr)
+            print(f"\nEpoch {epoch+1}: Warmup Learning Rate set to {new_lr:.6f}")
+
 class ThroughputPerEpoch(callbacks.Callback):
     def on_epoch_begin(self, epoch, logs=None):
         self.epoch_start = time.time()
@@ -343,16 +384,26 @@ class ShiftConsistencyCallback(tf.keras.callbacks.Callback):
 # early_stop = callbacks.EarlyStopping(monitor='val_loss', patience=6,
 #                                      restore_best_weights=True, verbose=1)
 # Option 2:Monitor the validation accuracy of the ID/Classification branch
-early_stop = callbacks.EarlyStopping(patience=6, restore_best_weights=True, 
+early_stop = callbacks.EarlyStopping(patience=6, restore_best_weights=True,
                                      mode='max', # Use 'max' for accuracy
                                      verbose=1,
                                      monitor='val_id_loss_output_accuracy',
 )
-checkpoint = callbacks.ModelCheckpoint("emnist_best_model.keras", 
+checkpoint = callbacks.ModelCheckpoint("emnist_best_model.keras",
                                        monitor='val_id_loss_output_accuracy',
                                        save_best_only=True, mode='max', verbose=1)
+LinearWarmup(target_lr=TARGET_LR, warmup_epochs=WARMUP_EPOCHS),
+# reduce_lr = callbacks.ReduceLROnPlateau(monitor='val_id_loss_output_loss',
+#                                         factor=0.1, # Reduce LR by 10x
+#                                         patience=5, # Wait 5 epochs for improvement
+#                                         min_lr=1e-6, # Minimum learning rate
+#                                         verbose=1,
+#                                         mode='min') # Added mode='min' for loss
+
+
+
 time_callback = ThroughputPerEpoch()
-# Initialize Shift Consistency callback
+# Shift Consistency callback
 shift_callback = ShiftConsistencyCallback(val_data)
 
 def map_dual_labels(image, label):
@@ -373,7 +424,8 @@ history = model.fit(
     train_data,
     epochs=1,
     validation_data=val_data,
-    callbacks=[early_stop, checkpoint, time_callback, shift_callback],
+    callbacks=[early_stop, checkpoint, reduce_lr_callback, LinearWarmup, time_callback, 
+               shift_callback],
     verbose=1
 )
 
@@ -535,4 +587,4 @@ print(f"\nTest Accuracy: {test_acc:.4f}")
 print(f"Total Test Loss: {total_loss:.4f}")
 
 # 3. Plot Evaluation curve for test set
-plot_evaluation_curves(y_test_true, y_test_probs, y_test_pred, target_names, set_name="Test")
+# plot_evaluation_curves(y_test_true, y_test_probs, y_test_pred, target_names, set_name="Test")
