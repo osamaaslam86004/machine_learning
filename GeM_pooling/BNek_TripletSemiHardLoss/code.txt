@@ -196,9 +196,9 @@ def triplet_semi_hard_loss(labels, embeddings, margin=0.3):
 # Wrap the custom function to match Keras Loss API
 @tf.keras.utils.register_keras_serializable(package="CustomLayers")
 class TripletSemiHardLoss(tf.keras.losses.Loss):
-    def __init__(self, margin=0.3, name="triplet_loss"):
-        # We pass **kwargs to handle the 'reduction' argument if Keras passes it
-        super().__init__(name=name)
+    def __init__(self, margin=0.3, name="triplet_loss", **kwargs):
+        # **kwargs captures 'reduction' and other Keras-internal arguments
+        super().__init__(name=name, **kwargs)
         self.margin = margin
 
     def call(self, y_true, y_pred):
