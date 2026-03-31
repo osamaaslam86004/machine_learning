@@ -1,0 +1,5 @@
+SGD:
+https://colab.research.google.com/drive/1GAHJAjxNwO2bYTsnh6hiFRLlyiL51_0F#scrollTo=8Cc6MYhadyrX
+
+READ ME:
+1. No Shortcut Added in Base Model
