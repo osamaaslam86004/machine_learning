@@ -1,0 +1,7 @@
+
+
+Pre-Train Model: emnist_best_model.keras
+
+Fine-Tune Model: fine_tuned_emnist_model.keras
+
+https://colab.research.google.com/drive/1DOjzDUt1-Cr_WC1Q4CUhMu2qGXIHs82P#scrollTo=21tAFhZrVYEk
