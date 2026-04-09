@@ -1,0 +1,11 @@
+
+Method 1:
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("osamaaslam86004/cifar-10-augmented")
+
+print("Path to dataset files:", path)
+
+Method 2:
+https://www.kaggle.com/datasets/osamaaslam86004/cifar-10-augmented/
