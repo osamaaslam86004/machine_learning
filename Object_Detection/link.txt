@@ -1,0 +1,4 @@
+
+Dataset:
+
+https://www.kaggle.com/datasets/eternel22/safran-synthetic-digits-v5
