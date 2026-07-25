@@ -1,30 +1,14 @@
-# Brain Tumor Detection YOLOv11
 
-This repository contains training and segmentation results for brain tumor detection using YOLOv11.
 
-## Folder Descriptions
+### See Also 
+1. [`editframes`](https://github.com/osamaaslam86004/editframes.git)
+editframes is a Python-based programmatic video generation toolkit designed to implement automated video rendering workflows using Python, HTML templates.
+  
+2. [web scrapping](https://github.com/osamaaslam86004/web_scrapping.git)
 
-### 1. `original_dataset_100_epochs`
-This folder contains the training and segmentation results for the **original dataset without any data augmentation**.
+3. [AI-Portfolio](https://github.com/osamaaslam86004/AI-Portfolio.git)
 
-You can explore the folder here:  
-[original_dataset_100_epochs](https://github.com/osamaaslam86004/brain_tumor_detection_yolo11n.pt_sam2/tree/main/original_dataset_100_epochs)
-
+4. [LLM Scrapper](https://github.com/osamaaslam86004/AI_Scrapper.git)
 ---
 
-### 2. `orignal_dataset_polygon_to_bounding_box`
-This folder contains training and segmentation results **without data augmentation**, but with polygon annotations converted to bounding boxes.
-
-The conversion from polygon annotations to bounding boxes was performed using the script:  
-[`polygon_to_box.py`](https://github.com/osamaaslam86004/brain_tumor_detection_yolo11n.pt_sam2/blob/main/orignal_dataset_polygon_to_bounding_box/polygon_to_box.py)
-
-Explore the folder here:  
-[orignal_dataset_polygon_to_bounding_box](https://github.com/osamaaslam86004/brain_tumor_detection_yolo11n.pt_sam2/tree/main/orignal_dataset_polygon_to_bounding_box)
-
----
-
-## Additional Information
-
-- The dataset and results are intended for research on brain tumor detection.
-- For more details on the methodology and usage, please refer to the project documentation or contact the repository owner.
 
