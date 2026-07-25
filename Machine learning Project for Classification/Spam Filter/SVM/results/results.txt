@@ -1,0 +1,77 @@
+
+###############################
+
+SVM
+
+###############################
+
+
+[nltk_data] Downloading package stopwords to /root/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+Downloading and extracting datasets...
+Downloading 20030228_easy_ham.tar.bz2...
+Downloading 20030228_spam.tar.bz2...
+Download and extraction complete.
+
+Splitting data into train and test sets...
+Total emails: 3002 — Spam ratio: 16.69%
+pre-processing pipeline and Vectorizing text data...
+Training classifier...
+Fitting 3 folds for each of 12 candidates, totalling 36 fits
+[CV] END .....................C=0.1, gamma=scale, kernel=rbf; total time=   2.3s
+[CV] END .....................C=0.1, gamma=scale, kernel=rbf; total time=   2.2s
+[CV] END ..................C=0.1, gamma=scale, kernel=linear; total time=   0.6s
+[CV] END ..................C=0.1, gamma=scale, kernel=linear; total time=   0.6s
+[CV] END ..................C=0.1, gamma=scale, kernel=linear; total time=   0.6s
+[CV] END .....................C=0.1, gamma=scale, kernel=rbf; total time=   2.3s
+[CV] END ......................C=0.1, gamma=auto, kernel=rbf; total time=   1.6s
+[CV] END ......................C=0.1, gamma=auto, kernel=rbf; total time=   1.5s
+[CV] END ...................C=0.1, gamma=auto, kernel=linear; total time=   0.5s
+[CV] END ...................C=0.1, gamma=auto, kernel=linear; total time=   0.6s
+[CV] END ......................C=0.1, gamma=auto, kernel=rbf; total time=   1.5s
+[CV] END ...................C=0.1, gamma=auto, kernel=linear; total time=   0.8s
+[CV] END .......................C=1, gamma=scale, kernel=rbf; total time=   3.5s
+[CV] END .......................C=1, gamma=scale, kernel=rbf; total time=   3.4s
+[CV] END ....................C=1, gamma=scale, kernel=linear; total time=   0.5s
+[CV] END ....................C=1, gamma=scale, kernel=linear; total time=   0.5s
+[CV] END ....................C=1, gamma=scale, kernel=linear; total time=   0.5s
+[CV] END .......................C=1, gamma=scale, kernel=rbf; total time=   2.4s
+[CV] END ........................C=1, gamma=auto, kernel=rbf; total time=   1.6s
+[CV] END ........................C=1, gamma=auto, kernel=rbf; total time=   1.6s
+[CV] END .....................C=1, gamma=auto, kernel=linear; total time=   0.4s
+[CV] END .....................C=1, gamma=auto, kernel=linear; total time=   0.5s
+[CV] END ........................C=1, gamma=auto, kernel=rbf; total time=   1.7s
+[CV] END .....................C=1, gamma=auto, kernel=linear; total time=   0.5s
+[CV] END ......................C=10, gamma=scale, kernel=rbf; total time=   1.4s
+[CV] END ......................C=10, gamma=scale, kernel=rbf; total time=   1.4s
+[CV] END ...................C=10, gamma=scale, kernel=linear; total time=   0.4s
+[CV] END ...................C=10, gamma=scale, kernel=linear; total time=   0.5s
+[CV] END ...................C=10, gamma=scale, kernel=linear; total time=   0.5s
+[CV] END ......................C=10, gamma=scale, kernel=rbf; total time=   1.5s
+[CV] END .......................C=10, gamma=auto, kernel=rbf; total time=   1.3s
+[CV] END .......................C=10, gamma=auto, kernel=rbf; total time=   1.2s
+[CV] END ....................C=10, gamma=auto, kernel=linear; total time=   0.5s
+[CV] END ....................C=10, gamma=auto, kernel=linear; total time=   0.6s
+[CV] END .......................C=10, gamma=auto, kernel=rbf; total time=   1.5s
+[CV] END ....................C=10, gamma=auto, kernel=linear; total time=   0.6s
+Best parameters: {'C': 1, 'gamma': 'scale', 'kernel': 'linear'}
+Best cross-validation score: 0.9437760091552226
+Evaluating classifier...
+Figure(1000x600)
+Figure(800x600)
+
+Accuracy: 0.940099833610649
+
+Classification Report:
+              precision    recall  f1-score   support
+
+         ham       0.97      0.96      0.96       501
+        spam       0.80      0.85      0.83       100
+
+    accuracy                           0.94       601
+   macro avg       0.89      0.90      0.89       601
+weighted avg       0.94      0.94      0.94       601
+
+
+AUC: 0.9666966067864272
+Figure(800x600)

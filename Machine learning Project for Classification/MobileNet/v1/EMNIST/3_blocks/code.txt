@@ -1,0 +1,231 @@
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from tensorflow import keras
+from tensorflow.keras import layers, models, callbacks, regularizers
+from sklearn.metrics import (roc_curve, auc, precision_recall_curve, 
+                             average_precision_score, confusion_matrix, 
+                             classification_report, accuracy_score)
+from sklearn.preprocessing import label_binarize
+
+
+# Download latest version
+DATA_DIR = "/kaggle/input/emnist-digits-balanced"
+
+def get_keras_dataset():
+    print("--- Loading EMNIST Digits from local PNG folders ---")
+
+    # Global access and constants
+    IMG_SIZE = (28, 28)
+    BATCH_SIZE = 128
+    SEED = 42
+
+    # 1. Load TRAIN dataset
+    train_ds = tf.keras.utils.image_dataset_from_directory(
+        f"{DATA_DIR}/train",
+        validation_split=0.2,
+        subset="training",
+        seed=SEED,
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE
+    )
+
+    val_ds = tf.keras.utils.image_dataset_from_directory(
+        f"{DATA_DIR}/train",
+        validation_split=0.2,
+        subset="validation",
+        seed=SEED,
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE
+    )
+
+    # 2. Load TEST dataset
+    test_ds = tf.keras.utils.image_dataset_from_directory(
+        directory=f"{DATA_DIR}/test",
+        labels="inferred",
+        label_mode="int",
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        shuffle=False
+    )
+
+    class_names = train_ds.class_names
+    print("Class names:", class_names)
+
+    # 4. Normalization layer (NO augmentation)
+    norm_layer = layers.Normalization(axis=None)
+    # Adapt on a mapping to ensure the stats are based on [0, 1] range
+    norm_layer.adapt(
+        train_ds.map(lambda x, y: x / 255.0).take(500)
+    )
+
+    preprocessing_model = models.Sequential([
+        layers.Input(shape=(28, 28, 1)),
+        layers.Rescaling(1./255),
+        norm_layer
+    ], name="preprocessing_head")
+
+    # 5. Final pipeline
+    def finalize(ds, shuffle=False):
+        if shuffle:
+            ds = ds.shuffle(10000, seed=SEED)
+        return ds.prefetch(tf.data.AUTOTUNE)
+
+    train_ds = finalize(train_ds, shuffle=True)
+    val_ds = finalize(val_ds)
+    test_ds = test_ds.prefetch(tf.data.AUTOTUNE)
+
+    return train_ds, val_ds, test_ds, preprocessing_model
+
+
+def build_mobilenet_v1(preprocessing_layer):
+    l2_reg = regularizers.l2(1e-4)
+
+    def mobilenet_v1_block(x, filters, stride=1):
+        # 1. Depthwise Convolution: Filters each input channel individually
+        x = layers.DepthwiseConv2D(kernel_size=3, strides=stride, padding='same', 
+                                   use_bias=False)(x)
+        x = layers.BatchNormalization()(x)
+        x = layers.ReLU(6.0)(x)  # ReLU6 caps output at 6 for mobile efficiency
+
+        # 2. Pointwise Convolution: 1x1 conv to combine channels
+        x = layers.Conv2D(filters=filters, kernel_size=1, strides=1, padding='same', 
+                          use_bias=False)(x)
+        x = layers.BatchNormalization()(x)
+        x = layers.ReLU(6.0)(x)
+        
+        return x
+
+    # --- Construct Model ---
+    inputs = layers.Input(shape=(28, 28, 1))
+    x = preprocessing_layer(inputs)
+     
+    # Standard 3x3 Conv Layer (Stride 2) per original paper
+    x = layers.Conv2D(16, kernel_size=3, strides=2, padding='same', use_bias=False)(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation('relu')(x)
+
+    # Using 3 blocks for EMNIST (input->14->14->7)
+    x = mobilenet_v1_block(x, 32, stride=1)
+    x = mobilenet_v1_block(x, 64, stride=2)
+    x = mobilenet_v1_block(x, 128, stride=1)
+
+    # Classification Head
+    x = layers.GlobalAveragePooling2D()(x)
+    x = layers.Dense(256, kernel_initializer='he_normal', kernel_regularizer=l2_reg)(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation('relu')(x)
+    x = layers.Dropout(0.5)(x)
+    
+    outputs = layers.Dense(10, activation='softmax')(x)
+
+    model = models.Model(inputs, outputs, name="mobilenet_v1_EMNIST")
+
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    
+    return model
+
+
+# Initialize
+train_data, val_data, test_data, prep_layer = get_keras_dataset()
+model = build_mobilenet_v1(prep_layer)
+model.summary()
+
+
+# Callbacks
+early_stop = callbacks.EarlyStopping(monitor='val_loss', patience=6, restore_best_weights=True, verbose=1)
+reduce_lr = callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=3, min_lr=1e-6, verbose=1)
+checkpoint = callbacks.ModelCheckpoint("emnist_best_model.keras", monitor='val_accuracy', save_best_only=True, mode='max', verbose=1)
+
+# Train
+history = model.fit(
+    train_data,
+    epochs=250,
+    validation_data=val_data,
+    callbacks=[early_stop, reduce_lr, checkpoint],
+    verbose=1
+)
+
+# Plotting
+plt.figure(figsize=(12,4))
+plt.subplot(1,2,1)
+plt.plot(history.history['accuracy'], label='Train Acc')
+plt.plot(history.history['val_accuracy'], label='Val Acc')
+plt.title('Accuracy over Epochs')
+plt.legend()
+
+plt.subplot(1,2,2)
+plt.plot(history.history['loss'], label='Train Loss')
+plt.plot(history.history['val_loss'], label='Val Loss')
+plt.title('Loss over Epochs')
+plt.legend()
+plt.show()
+
+# Evaluation logic
+def get_actual_and_probabilities(dataset):
+    y_true = []
+    y_probs = []
+    for images, labels in dataset:
+        preds = model.predict(images, verbose=0)
+        y_probs.extend(preds)
+        y_true.extend(labels.numpy())
+    return np.array(y_true), np.array(y_probs)
+
+def plot_evaluation_curves(y_true_labels, y_probs, class_names, set_name="Test"):
+    n_classes = len(class_names)
+    y_true_bin = label_binarize(y_true_labels, classes=range(n_classes))
+    
+    plt.figure(figsize=(16, 7))
+    plt.subplot(1, 2, 1)
+    for i in range(n_classes):
+        fpr, tpr, _ = roc_curve(y_true_bin[:, i], y_probs[:, i])
+        plt.plot(fpr, tpr, label=f'Class {class_names[i]} (AUC = {auc(fpr, tpr):.3f})')
+    plt.plot([0, 1], [0, 1], 'k--')
+    plt.title(f'ROC Curves - {set_name}')
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    plt.subplot(1, 2, 2)
+    for i in range(n_classes):
+        precision, recall, _ = precision_recall_curve(y_true_bin[:, i], y_probs[:, i])
+        plt.plot(recall, precision, label=f'Class {class_names[i]}')
+    plt.title(f'PR Curves - {set_name}')
+    plt.tight_layout()
+    plt.show()
+
+# Final Evaluation
+target_names = [str(i) for i in range(10)]
+y_test_true, y_test_probs = get_actual_and_probabilities(test_data)
+
+# Get predicted labels for the test set
+y_test_pred = np.argmax(y_test_probs, axis=1)
+
+# 1. Print classification report
+print("Classification Report (Test Set):")
+print(classification_report(y_test_true, y_test_pred, target_names=target_names))
+
+# 2. Print accuracy on test set
+accuracy = accuracy_score(y_test_true, y_test_pred)
+print(f"\nAccuracy (Test Set): {accuracy:.4f}")
+
+# 3. Plot confusion matrix for test set
+plt.figure(figsize=(10, 8))
+sns.heatmap(confusion_matrix(y_test_true, y_test_pred),
+            annot=True,
+            fmt='d',
+            cmap='Blues',
+            xticklabels=target_names,
+            yticklabels=target_names)
+plt.title('Confusion Matrix (Test Set)')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+
+plot_evaluation_curves(y_test_true, y_test_probs, target_names, set_name="Test")

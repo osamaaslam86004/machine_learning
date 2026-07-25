@@ -1,0 +1,11 @@
+google colab: https://colab.research.google.com/drive/16xfQLT3vfZKH01shs-6lkXXsYwaRf7uM#scrollTo=DIcpscUFwfRE
+
+# model.png
+version 1
+
+# v2.png
+What is Change?
+1.  Add Dropout(0.3) after GAP
+2.  Add Batchnormalixation after GAP
+3.  Add SpatialDropout2D(0.1) after SE(sequeeze-excitation) Block
+4. Change Rotation Augmentation: 30% --> 15%

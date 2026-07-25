@@ -1,0 +1,43 @@
+
+###############################
+
+LogisticRegression
+
+###############################
+
+[nltk_data] Downloading package stopwords to /root/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+Downloading and extracting datasets...
+Downloading 20030228_easy_ham.tar.bz2...
+Downloading 20030228_spam.tar.bz2...
+Download and extraction complete.
+
+Splitting data into train and test sets...
+Total emails: 3002 — Spam ratio: 16.69%
+pre-processing pipeline and Vectorizing text data...
+Training classifier...
+Best parameters: {'C': 10, 'max_iter': 100, 'solver': 'lbfgs'}
+Best cross-validation score: 0.9654287941787942
+Evaluating classifier...
+Figure(1000x600)
+Figure(800x600)
+
+Accuracy: 0.9500831946755408
+
+Classification Report:
+              precision    recall  f1-score   support
+
+         ham       0.97      0.97      0.97       501
+        spam       0.86      0.83      0.85       100
+
+    accuracy                           0.95       601
+   macro avg       0.92      0.90      0.91       601
+weighted avg       0.95      0.95      0.95       601
+
+
+AUC: 0.9842914171656687
+Figure(800x600)
+
+
+
+

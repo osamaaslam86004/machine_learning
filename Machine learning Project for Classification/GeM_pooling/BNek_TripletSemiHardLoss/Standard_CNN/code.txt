@@ -1,0 +1,590 @@
+import time
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from tensorflow import keras
+import tensorflow.keras.backend as K
+from tensorflow.keras import layers, models, callbacks, regularizers, backend, losses
+from tensorflow.keras.utils import plot_model # Added plot_model
+from sklearn.metrics import (roc_curve, auc, precision_recall_curve,
+                             average_precision_score, confusion_matrix,
+                             classification_report, accuracy_score)
+from sklearn.preprocessing import label_binarize
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("osamaaslam86004/emnist-digits-balanced")
+
+print("Path to dataset files:", path)
+DATA_DIR = path
+
+# Download latest version
+# DATA_DIR = "/kaggle/input/emnist-digits-balanced"
+
+# Global access and constants
+IMG_SIZE = (28, 28)
+BATCH_SIZE = 128
+SEED = 42
+# Define parameters based on the paper
+TARGET_LR = 3.5e-4
+WARMUP_EPOCHS = 10
+
+
+def get_keras_dataset():
+    print("--- Loading EMNIST Digits from local PNG folders ---")
+
+    # Global access and constants
+    global IMG_SIZE
+    global BATCH_SIZE
+    global SEED
+
+    # 1. Load TRAIN dataset
+    train_ds = tf.keras.utils.image_dataset_from_directory(
+        f"{DATA_DIR}/train",
+        validation_split=0.2,
+        subset="training",
+        seed=SEED,
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        label_mode="int" # Changed from 'categorical' to 'int'
+    )
+
+    val_ds = tf.keras.utils.image_dataset_from_directory(
+        f"{DATA_DIR}/train",
+        validation_split=0.2,
+        subset="validation",
+        seed=SEED,
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        label_mode="int" # Changed from 'categorical' to 'int'
+    )
+
+    # 2. Load TEST dataset
+    test_ds = tf.keras.utils.image_dataset_from_directory(
+        directory=f"{DATA_DIR}/test",
+        labels="inferred",
+        label_mode="int", # Changed from 'categorical' to 'int'
+        color_mode="grayscale",
+        image_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        shuffle=False
+    )
+
+    class_names = train_ds.class_names
+    print("Class names:", class_names)
+
+    # 4. Normalization layer (NO augmentation)
+    norm_layer = layers.Normalization(axis=None)
+    # Adapt on a mapping to ensure the stats are based on [0, 1] range
+    norm_layer.adapt(
+        train_ds.map(lambda x, y: x / 255.0).take(500)
+    )
+
+    shift_val = 1.0 / 28
+
+    # Fixed 1-pixel translation layer
+    translation_layer = layers.RandomTranslation(
+        height_factor=(shift_val, shift_val), # Fixed at +1 pixel vertically
+        width_factor=(shift_val, shift_val),  # Fixed at +1 pixel horizontally
+        fill_mode='constant',
+        fill_value=0.0,
+        seed=SEED
+    )
+
+    preprocessing_model = models.Sequential([
+        layers.Rescaling(1./255),
+        norm_layer,
+        layers.RandomRotation(0.3),
+        translation_layer,
+        layers.RandomZoom(0.02)
+    ], name="preprocessing_head")
+
+    # 5. Final pipeline
+    def finalize(ds, shuffle=False):
+        if shuffle:
+            ds = ds.shuffle(10000, seed=SEED)
+        return ds.prefetch(tf.data.AUTOTUNE)
+
+    train_ds = finalize(train_ds, shuffle=True)
+    val_ds = finalize(val_ds)
+    test_ds = test_ds.prefetch(tf.data.AUTOTUNE)
+
+    return train_ds, val_ds, test_ds, preprocessing_model
+
+
+# -------------------------------
+# ᐧ GEM Pooling
+# -------------------------------
+@tf.keras.utils.register_keras_serializable(package="CustomLayers")
+class GeMPooling2D(layers.Layer):
+    def __init__(self, p=3.0, trainable=True, epsilon=1e-6, **kwargs):
+        super(GeMPooling2D, self).__init__(**kwargs)
+        self.p = p
+        self.trainable = trainable
+        self.epsilon = epsilon
+
+    def build(self, input_shape):
+        self.p_param = self.add_weight(
+            name="p",
+            shape=(1, 1, 1, input_shape[-1]),
+            initializer=tf.keras.initializers.Constant(self.p),
+            trainable=self.trainable,
+            # Use a formal Keras constraint object
+            constraint=tf.keras.constraints.MinMaxNorm(min_value=1.0, max_value=10.0, rate=1.0, axis=0),
+            dtype=tf.float32
+        )
+        super(GeMPooling2D, self).build(input_shape)
+
+    def call(self, x):
+        # Ensure input is positive for pow operations
+        x = tf.maximum(x, self.epsilon)
+        pow_mean = tf.reduce_mean(tf.pow(x, self.p_param), axis=[1, 2], keepdims=True)
+        gem_out = tf.pow(pow_mean, 1.0 / self.p_param)
+        return tf.reshape(gem_out, [tf.shape(x)[0], tf.shape(x)[-1]])
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "p": self.p,
+            "trainable": self.trainable,
+            "epsilon": self.epsilon
+        })
+        return config
+
+    def compute_output_shape(self, input_shape):
+        # GeM collapses spatial dimensions, leaving only (batch, channels)
+        return (input_shape[0], input_shape[-1])
+
+
+def triplet_semi_hard_loss(labels, embeddings, margin=0.3):
+    """
+    Custom implementation of Triplet Semi-Hard Loss.
+    labels: [batch_size, 1] or [batch_size]
+    embeddings: [batch_size, embedding_dim] (These are the GeM features)
+    """
+    # 1. Compute Pairwise Distance Matrix: dist(i, j) = ||e_i - e_j||^2
+    # Using the formula: ||a-b||^2 = ||a||^2 - 2ab + ||b||^2
+    squared_norm = tf.reduce_sum(tf.square(embeddings), axis=1, keepdims=True)
+    distances = squared_norm - 2.0 * tf.matmul(embeddings, embeddings, transpose_b=True) + tf.transpose(squared_norm)
+    distances = tf.maximum(distances, 0.0) # Avoid negative numbers due to float errors
+
+    # 2. Build masks for Positive and Negative pairs
+    labels = tf.reshape(labels, [-1, 1])
+    mask_pos = tf.equal(labels, tf.transpose(labels))
+    mask_pos = tf.cast(mask_pos, tf.float32)
+
+    mask_neg = tf.logical_not(tf.equal(labels, tf.transpose(labels)))
+    mask_neg = tf.cast(mask_neg, tf.float32)
+
+    # 3. Calculate distances
+    # For each anchor, find the distance to all positives
+    anchor_positive_dist = tf.multiply(mask_pos, distances)
+    # Get the hardest positive (max distance) for each anchor
+    hardest_positive_dist = tf.reduce_max(anchor_positive_dist, axis=1)
+
+    # For each anchor, find the semi-hard negatives
+    # Semi-hard: d(a,p) < d(a,n) < d(a,p) + margin
+    # To simplify for training, we often just use "Hard Negative Mining":
+    # (Select the smallest distance where labels are different)
+    max_dist = tf.reduce_max(distances)
+    negative_dist = distances + max_dist * (1.0 - mask_neg) # Push positive distances to infinity
+    hardest_negative_dist = tf.reduce_min(negative_dist, axis=1)
+
+    # 4. Final Loss
+    loss = tf.maximum(hardest_positive_dist - hardest_negative_dist + margin, 0.0)
+    return tf.reduce_mean(loss)
+
+
+# Wrap the custom function to match Keras Loss API
+@tf.keras.utils.register_keras_serializable(package="CustomLayers")
+class TripletSemiHardLoss(tf.keras.losses.Loss):
+    def __init__(self, margin=0.3, name="triplet_loss", **kwargs):
+        # **kwargs captures 'reduction' and other Keras-internal arguments
+        super().__init__(name=name, **kwargs)
+        self.margin = margin
+
+    def call(self, y_true, y_pred):
+        # y_true will be the labels (e.g., person IDs)
+        # y_pred will be the 'gem_features'
+        return triplet_semi_hard_loss(y_true, y_pred, margin=self.margin)
+
+    def get_config(self):
+        """
+        Returns the config dictionary for the loss.
+        This is required for saving and loading models.
+        """
+        config = super().get_config()
+        config.update({
+            "margin": self.margin
+        })
+        return config
+
+@tf.keras.utils.register_keras_serializable(package="Custom")
+class L2NormalizeLayer(tf.keras.layers.Layer):
+    def call(self, inputs):
+        return tf.math.l2_normalize(inputs, axis=1)
+
+def build_bnneck_model(preprocessing_layer):
+    conv_reg = regularizers.l2(1e-4)
+
+    inputs = layers.Input(shape=(None, None, 1))
+    x = preprocessing_layer(inputs)
+
+    # --- Feature Extraction Backbone ---
+    # (Simplified representation of your existing blocks)
+    x = layers.Conv2D(16, (3, 3), padding='same', activation='relu')(x)
+    x = layers.Conv2D(32, (3, 3), padding='same', activation='relu')(x)
+    x = layers.Conv2D(64, (3, 3), padding='same', activation='relu')(x)
+
+    # --- GeM Pooling ---
+    # Output: (batch, 64)
+    raw_gem_feat = GeMPooling2D(p=3.0, name='raw_gem_embedding_layer')(x)
+
+    # --- Branch 1: Metric Learning (Triplet Loss) ---
+    # L2 Normalize for Triplet Loss (Required by your triplet.py)
+    # This ensures embeddings are on a unit hypersphere
+    global_feat = L2NormalizeLayer(name='gem_features')(raw_gem_feat)
+
+    # -----------------------------------------------------------
+    # BNNeck Implementation
+    # -----------------------------------------------------------
+    # 1. 'global_feat' is used for Triplet Loss (Euclidean space)
+
+    # 2. The BN layer "Neck"
+    # We set center=True, scale=True as per the TMM 2020 paper
+
+    # --- Branch 2: Classification (ID Loss) ---
+    bn_feat = layers.BatchNormalization(name='bn_neck')(raw_gem_feat)
+
+    # 3. Classifier Head for ID Loss (Cosine space)
+    # use_bias=False is crucial here
+    probabilities = layers.Dense(
+        10,
+        use_bias=False,
+        activation='softmax',
+        name='id_loss_output'
+    )(bn_feat)
+
+    # 4. Create Model with TWO outputs
+    # This allows us to pass global_feat to Triplet Loss
+    # and probabilities to CategoricalCrossentropy
+    model = models.Model(inputs=inputs, outputs=[global_feat, probabilities])
+
+    # 2. Define the ID (Classification) Loss
+    # Instantiate the loss function with label smoothing
+    # Set from_logits=True if your model's final layer outputs logits (raw scores),
+    # or False if it outputs probabilities (after a Softmax activation)
+    id_loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(name='id_loss')
+
+    # 3. Compile the Model
+    # Assuming your model outputs are named 'gem_features' and 'id_loss_output'
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+        loss={
+            'gem_features': TripletSemiHardLoss(margin=0.3),
+            'id_loss_output': id_loss_fn
+        },
+        loss_weights={
+            'gem_features': 1.0,
+            'id_loss_output': 1.0
+        },
+        metrics={'id_loss_output': 'accuracy'}
+    )
+    return model
+
+# Initialize
+train_data, val_data, test_data, prep_layer = get_keras_dataset()
+model = build_bnneck_model(prep_layer)
+model.summary()
+
+# Callbacks
+def lr_schedule_bottleneck(epoch):
+    target_lr = 3.5e-4
+    warmup_epochs = 10
+    
+    # 1. Linear Warmup (Epoch 0-9)
+    if epoch < warmup_epochs:
+        initial_lr = target_lr / 10
+        return initial_lr + (target_lr - initial_lr) * (epoch / warmup_epochs)
+    
+    # 2. MultiStep Decay Milestones
+    # Adjusted for EMNIST's faster convergence
+    if epoch < 25:
+        return target_lr
+    elif epoch < 40:
+        return target_lr * 0.1  # First decay (10%)
+    else:
+        return target_lr * 0.01 # Second decay (1%)
+
+# Wrap it in a Keras Callback
+reduce_lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule_bottleneck, verbose=1)
+
+
+# 1. Custom Warmup Callback (Matches Paper's Linear Growth)
+class LinearWarmup(tf.keras.callbacks.Callback):
+    def __init__(self, target_lr, warmup_epochs):
+        self.target_lr = target_lr
+        self.warmup_epochs = warmup_epochs
+        self.initial_lr = target_lr / 10 # Start at 1/10th of target
+
+    def on_epoch_begin(self, epoch, logs=None):
+        if epoch < self.warmup_epochs:
+            # Linear interpolation: lr = start + (target-start) * (current/total)
+            new_lr = self.initial_lr + (self.target_lr - self.initial_lr) * (epoch / self.warmup_epochs)
+            K.set_value(self.model.optimizer.lr, new_lr)
+            print(f"\nEpoch {epoch+1}: Warmup Learning Rate set to {new_lr:.6f}")
+
+class ThroughputPerEpoch(callbacks.Callback):
+    def on_epoch_begin(self, epoch, logs=None):
+        self.epoch_start = time.time()
+    def on_epoch_end(self, epoch, logs=None):
+        global BATCH_SIZE
+        duration = time.time() - self.epoch_start
+        throughput = len(train_data) * BATCH_SIZE / duration
+        print(f" - Epoch {epoch+1} Time: {duration:.2f}s | Throughput: {throughput:.2f} img/sec")
+
+class ShiftConsistencyCallback(tf.keras.callbacks.Callback):
+    def __init__(self, validation_data):
+        super().__init__()
+        self.validation_data = validation_data
+
+    def on_epoch_end(self, epoch, logs=None):
+        total_matches = 0
+        total_samples = 0
+
+        for images, _ in self.validation_data:
+            # 1. Get predictions for original images
+            # Model now returns two outputs: [global_feat, probabilities]
+            _, preds_orig = self.model.predict(images, verbose=0)
+            labels_orig = np.argmax(preds_orig, axis=1)
+
+            # 2. Create shifted images (Shift 1 pixel right/horizontally)
+            # axis=2 corresponds to the width dimension in (batch, height, width, channels)
+            images_shifted = tf.roll(images, shift=1, axis=2)
+
+            # 3. Get predictions for shifted images
+            _, preds_shifted = self.model.predict(images_shifted, verbose=0)
+            labels_shifted = np.argmax(preds_shifted, axis=1)
+
+            # 4. Compare and aggregate
+            total_matches += np.sum(labels_orig == labels_shifted)
+            total_samples += tf.shape(images)[0].numpy()
+
+        consistency = total_matches / total_samples
+        print(f" - Epoch {epoch+1} Shift Consistency (1px): {consistency * 100:.2f}%")
+
+        # Optionally add it to logs so it can be viewed in history or TensorBoard
+        if logs is not None:
+            logs['val_shift_consistency'] = consistency
+
+# Option 1: Total Loss
+# early_stop = callbacks.EarlyStopping(monitor='val_loss', patience=6,
+#                                      restore_best_weights=True, verbose=1)
+# Option 2:Monitor the validation accuracy of the ID/Classification branch
+early_stop = callbacks.EarlyStopping(patience=6, restore_best_weights=True,
+                                     mode='max', # Use 'max' for accuracy
+                                     verbose=1,
+                                     monitor='val_id_loss_output_accuracy',
+)
+checkpoint = callbacks.ModelCheckpoint("emnist_best_model.keras",
+                                       monitor='val_id_loss_output_accuracy',
+                                       save_best_only=True, mode='max', verbose=1)
+LinearWarmup(target_lr=TARGET_LR, warmup_epochs=WARMUP_EPOCHS),
+# reduce_lr = callbacks.ReduceLROnPlateau(monitor='val_id_loss_output_loss',
+#                                         factor=0.1, # Reduce LR by 10x
+#                                         patience=5, # Wait 5 epochs for improvement
+#                                         min_lr=1e-6, # Minimum learning rate
+#                                         verbose=1,
+#                                         mode='min') # Added mode='min' for loss
+
+
+
+time_callback = ThroughputPerEpoch()
+# Shift Consistency callback
+shift_callback = ShiftConsistencyCallback(val_data)
+
+def map_dual_labels(image, label):
+    # Map the single integer label to both output layers
+    return image, {'gem_features': label, 'id_loss_output': label}
+
+# Apply this to your datasets
+train_data = train_data.map(map_dual_labels)
+val_data = val_data.map(map_dual_labels)
+test_data = test_data.map(map_dual_labels)
+
+# Train
+# Record the start time
+start_time = time.perf_counter() #
+
+# Train
+history = model.fit(
+    train_data,
+    epochs=1,
+    validation_data=val_data,
+    callbacks=[early_stop, checkpoint, reduce_lr_callback, LinearWarmup, time_callback, 
+               shift_callback],
+    verbose=1
+)
+
+# Record the end time
+end_time = time.perf_counter() #
+
+# 1. Access the GeM layer from your trained model
+# Assuming the layer is named 'ge_m_pooling2d'
+gem_layer = model.get_layer('raw_gem_embedding_layer') # Changed to 'gem_features' for BNNeck model
+# This weight array has the shape (1, 1, 1, 64).
+# Calling .flatten() converts that 4D array into a simple 1D array of 128 values,
+# which is exactly what your bar chart needs for plotting
+p_values = gem_layer.get_weights()[0].flatten()
+
+# ===============================================================
+#  STEP 8: Plot Accuracy , Loss, And p-Values (GeM),
+# and Confusion Matrix, ROC-Curve, PR-Curve
+# ==============================================================
+def plot_evaluation_curves(y_true_labels, y_probs, y_test_pred, class_names, set_name="Test"):
+  # Plotting
+  plt.figure(figsize=(12,4))
+  plt.subplot(1,2,1)
+  plt.plot(history.history['id_loss_output_accuracy'], label='Train Acc')
+  plt.plot(history.history['val_id_loss_output_accuracy'], label='Val Acc')
+  plt.title('Accuracy over Epochs')
+  plt.legend()
+
+  plt.subplot(1,2,2)
+  # 1. Plot Classification (ID) Loss
+  plt.plot(history.history['id_loss_output_loss'], label='Train ID Loss')
+  plt.plot(history.history['val_id_loss_output_loss'], label='Val ID Loss')
+  # 2. Plot Triplet Loss
+  plt.plot(history.history['gem_features_loss'], label='Train Triplet Loss')
+  plt.plot(history.history['val_gem_features_loss'], label='Val Triplet Loss')
+  # 3. Plot Combined Total Loss
+  plt.plot(history.history['loss'], label='Total Combined Loss', linestyle='--')
+  plt.title('Loss Components over Epochs')
+  plt.ylabel('Loss Value')
+  plt.xlabel('Epoch')
+  plt.legend()
+  plt.tight_layout()
+  plt.show()
+
+  # 2. Plot the distribution of p across the 64 channels
+  plt.figure(figsize=(10,8))
+  plt.bar(range(len(p_values)), p_values, color='skyblue')
+  plt.axhline(y=1.0, color='r', linestyle='--', label='Average Pooling (p=1)')
+  plt.axhline(y=3.0, color='g', linestyle='--', label='Starting p=3')
+  plt.title("Learned p-values per Channel")
+  plt.xlabel("Channel Index")
+  plt.ylabel("p value")
+  plt.legend()
+  plt.show()
+
+  plt.figure(figsize=(10,8))
+  # Confusion Matrix
+  sns.heatmap(confusion_matrix(y_test_true, y_test_pred),
+              annot=True,
+              fmt='d',
+              cmap='Blues',
+              xticklabels=target_names,
+              yticklabels=target_names)
+  plt.title('Confusion Matrix (Test Set)')
+  plt.xlabel('Predicted Label')
+  plt.ylabel('True Label')
+  plt.show()
+
+  # ROC Curve and Precision-Recall Curve
+  n_classes = len(class_names)
+  y_true_bin = label_binarize(y_true_labels, classes=range(n_classes))
+
+  plt.figure(figsize=(12, 6))
+  plt.subplot(1, 2, 1)
+  for i in range(n_classes):
+      fpr, tpr, _ = roc_curve(y_true_bin[:, i], y_probs[:, i])
+      plt.plot(fpr, tpr, label=f'Class {class_names[i]} (AUC = {auc(fpr, tpr):.3f})')
+  plt.plot([0, 1], [0, 1], 'k--')
+  plt.title(f'ROC Curves - {set_name}')
+  plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+
+  plt.subplot(1, 2, 2)
+  for i in range(n_classes):
+      precision, recall, _ = precision_recall_curve(y_true_bin[:, i], y_probs[:, i])
+      plt.plot(recall, precision, label=f'Class {class_names[i]}')
+  plt.title(f'PR Curves - {set_name}')
+  plt.tight_layout()
+  plt.show()
+
+# measure precise latency
+def measure_precise_latency(model, input_shape=(28, 28, 1), num_samples=100):
+    """
+    Measures the inference latency of a single model.predict() call.
+    Environment: Optimized for Kaggle GPU (T4/P100).
+    """
+    # 1. Create a single dummy input tensor
+    dummy_input = np.random.rand(1, *input_shape).astype(np.float32)
+
+    print(f"\n--- Starting Latency Measurement ({num_samples} iterations) ---")
+
+    # 2. WARM-UP: Essential for GPU initialization
+    for _ in range(10):
+        _ = model.predict(dummy_input, verbose=0)
+
+    # 3. MEASUREMENT LOOP: Using high-precision perf_counter
+    latencies = []
+    for _ in range(num_samples):
+        start_time = time.perf_counter()
+        # The model now returns two outputs, we only need the probabilities for latency
+        _, _ = model.predict(dummy_input, verbose=0)
+        end_time = time.perf_counter()
+        latencies.append(end_time - start_time)
+
+    # 4. CALCULATE STATS
+    avg_latency_ms = (sum(latencies) / num_samples) * 1000
+    p95_latency_ms = np.percentile(latencies, 95) * 1000
+
+    print(f"Average Inference Latency: {avg_latency_ms:.2f} ms")
+    print(f"P95 Latency (Tail Latency): {p95_latency_ms:.2f} ms")
+    return avg_latency_ms
+
+# Evaluation logic
+def get_actual_and_probabilities(dataset):
+    y_true = []
+    y_probs = []
+    for images, labels_dict in dataset:
+        # labels_dict is {'gem_features': label, 'id_loss_output': label}
+        # extract the integer label from one of the keys
+        labels = labels_dict['id_loss_output']
+        # The model returns two outputs: [global_feat, probabilities]
+        _, preds = model.predict(images, verbose=0)
+        y_probs.extend(preds)
+        y_true.extend(labels.numpy())
+    return np.array(y_true), np.array(y_probs)
+
+# Final Evaluation
+# 1. Execute the improved precise latency measurement
+measure_precise_latency(model, input_shape=(28, 28, 1))
+
+# 2. Continue with dataset evaluation
+target_names = [str(i) for i in range(10)]
+y_test_true, y_test_probs = get_actual_and_probabilities(test_data)
+
+# Get predicted labels for the test set
+y_test_pred = np.argmax(y_test_probs, axis=1)
+
+# 1. Print classification report
+print("Classification Report (Test Set):")
+print(classification_report(y_test_true, y_test_pred, target_names=target_names))
+
+# 2. Print accuracy on test set
+# The order is: [total_loss, gem_features_loss, id_loss_output_loss, id_loss_output_accuracy]
+results = model.evaluate(test_data, verbose=2)
+total_loss = results[0]
+gem_loss = results[1]
+id_loss = results[2]
+test_acc = results[3]
+
+print(f"\nTest Accuracy: {test_acc:.4f}")
+print(f"Total Test Loss: {total_loss:.4f}")
+
+# 3. Plot Evaluation curve for test set
+# plot_evaluation_curves(y_test_true, y_test_probs, y_test_pred, target_names, set_name="Test")

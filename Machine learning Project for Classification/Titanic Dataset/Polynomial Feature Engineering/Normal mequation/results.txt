@@ -1,0 +1,45 @@
+Training time (Normal Equation): 0.21042537689208984 seconds
+Alpha | Accuracy | F1 Score | Precision | Recall
+-----------------------------------------
+0.001 | 0.8251   | 0.7692   | 0.8125   | 0.7303
+ 0.01 | 0.8251   | 0.7692   | 0.8125   | 0.7303
+  0.1 | 0.8251   | 0.7692   | 0.8125   | 0.7303
+  0.5 | 0.8206   | 0.7647   | 0.8025   | 0.7303
+  1.0 | 0.8206   | 0.7647   | 0.8025   | 0.7303
+ 10.0 | 0.8072   | 0.7485   | 0.7805   | 0.7191
+100.0 | 0.8296   | 0.7683   | 0.8400   | 0.7079
+
+Best alpha: 0.001
+
+Theta values for the best model:
+[ 0.18868881 -0.26880167 -0.31024108 -0.21506278  0.16987647  0.27724038
+  0.13003936  0.16331256  0.07676271  0.02924974 -0.10767245  0.04711711
+  0.15629182 -0.0242356  -0.0639333   0.02933742 -0.29406241 -0.17263246
+  0.05040503 -0.01100072 -0.01214442  0.51150761  0.04214864]
+
+Feature Importance (from Ridge Regression Normal Equation):
+Sex                           : 0.51151
+Fare                          : -0.31024
+Pclass SibSp                  : -0.29406
+Parch                         : 0.27724
+Age                           : -0.26880
+Pclass                        : -0.21506
+bias                          : 0.18869
+Pclass Parch                  : -0.17263
+SibSp                         : 0.16988
+Age Fare                      : 0.16331
+Fare Pclass                   : 0.15629
+Age^2                         : 0.13004
+Age Parch                     : -0.10767
+Age Pclass                    : 0.07676
+Fare Parch                    : -0.06393
+SibSp^2                       : 0.05041
+Fare^2                        : 0.04712
+Embarked                      : 0.04215
+Pclass^2                      : 0.02934
+Age SibSp                     : 0.02925
+Fare SibSp                    : -0.02424
+Parch^2                       : -0.01214
+SibSp Parch                   : -0.01100
+
+Predictions saved to submission_normal_equation.csv
