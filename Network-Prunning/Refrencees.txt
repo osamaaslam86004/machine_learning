@@ -1,0 +1,4 @@
+https://pmc.ncbi.nlm.nih.gov/articles/PMC8786156/#:~:text=PCA%20driven%20mixed%20filter%20pruning%20is%20a,threshold%20*%20Sets%20these%20filters%20to%20zero
+
+
+https://arxiv.org/pdf/1812.06224

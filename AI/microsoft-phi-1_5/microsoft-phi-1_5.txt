@@ -1,0 +1,9 @@
+
+https://huggingface.co/microsoft/phi-1_5
+
+Why? There are a handful of ~1.5B models, which should fit quantized in 4GB, see e.g. TinyLlama-1.1B, Pythia-1B, Phi-1.5, even Phi-2. I've just checked Phi-2-q4k inference and it topped at 3.1GB of RAM in total (1.1GB idle Linux).
+
+It's possible to run many models in 4GB: Phi-1.5, Phi-2, TinyLlama-1.1B, Capybara-3B, FastChat-T5, even 70B model thanks to air_llm!
+
+
+

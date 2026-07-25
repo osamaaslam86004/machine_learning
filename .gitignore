@@ -1,3 +1,10 @@
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.7z
+*.rar
+
 # Python-related
 *.pkl
 *.pt
@@ -26,7 +33,7 @@ env/
 *.jpeg
 *.gif
 *.svg
-
+*.png
 
 # System files
 .DS_Store
@@ -39,6 +46,7 @@ Thumbs.db
 # Models and Binaries
 *.keras
 *.h5
+*.keras
 *.joblib
 *.bin
 *.model
