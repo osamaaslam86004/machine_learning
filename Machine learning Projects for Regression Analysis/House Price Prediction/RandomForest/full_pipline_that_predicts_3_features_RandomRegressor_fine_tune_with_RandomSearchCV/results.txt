@@ -1,0 +1,38 @@
+Feature names after OneHotEncoding: ['num__longitude' 'num__latitude' 'num__housing_median_age'
+ 'num__total_rooms' 'num__total_bedrooms' 'num__population'
+ 'num__households' 'num__median_income' 'num__rooms_per_household'
+ 'num__population_per_household' 'num__bedrooms_per_room'
+ 'cat__ocean_proximity_<1H OCEAN' 'cat__ocean_proximity_INLAND'
+ 'cat__ocean_proximity_ISLAND' 'cat__ocean_proximity_NEAR BAY'
+ 'cat__ocean_proximity_NEAR OCEAN']
+prediction: [499534.99 221615.   199907.   ... 312670.12 259634.01 182973.  ]
+
+Feature Importances BEFORE Tuning:
+num__median_income: 0.6848
+num__population_per_household: 0.3147
+cat__ocean_proximity_ISLAND: 0.0004
+Model rmese scores [81480.60296175 77533.34466479 78317.3163622  81982.63347601
+ 77852.97763577 82387.85433179 82129.26153853 79483.96667186
+ 77305.69703184 79394.61075688]
+Model rmese scores [81480.60296175 77533.34466479 78317.3163622  81982.63347601
+ 77852.97763577 82387.85433179 82129.26153853 79483.96667186
+ 77305.69703184 79394.61075688]
+Random Forest Cross-Validation Scores:
+Scores: [81480.60296175 77533.34466479 78317.3163622  81982.63347601
+ 77852.97763577 82387.85433179 82129.26153853 79483.96667186
+ 77305.69703184 79394.61075688]
+Mean: 79786.82654314066
+Standard deviation: 1931.8842415773727
+
+
+Feature Importances AFTER Tuning:
+num__median_income: 0.6873
+num__population_per_household: 0.3124
+cat__ocean_proximity_ISLAND: 0.0003
+
+Best hyperparameters found by Randomized Search:
+{'regressor__max_features': 1, 'regressor__n_estimators': 150}
+
+Final RMSE on the test set: 76050.06
+95% confidence interval for RMSE: [73690.24697181 78338.81287896]
+95% Confidence Interval for Test RMSE (t-dist): [73690.24697181 78338.81287896]

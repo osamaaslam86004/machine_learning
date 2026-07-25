@@ -1,0 +1,309 @@
+Coefficients of the train SVR model:
+num__longitude: -996.6529
+num__latitude: -2040.0862
+num__housing_median_age: 1312.5835
+num__total_rooms: 1653.9881
+num__total_bedrooms: 790.0176
+num__population: -327.4950
+num__households: 1104.2533
+num__median_income: 8109.6175
+num__rooms_per_household: 1224.9848
+num__population_per_household: -384.0355
+num__bedrooms_per_room: -2368.4740
+cat__ocean_proximity_<1H OCEAN: 2305.3581
+cat__ocean_proximity_INLAND: -3636.3581
+cat__ocean_proximity_ISLAND: 2.0000
+cat__ocean_proximity_NEAR BAY: 717.0000
+cat__ocean_proximity_NEAR OCEAN: 612.0000
+Model results: SVR(kernel='linear')
+Model RMSE scores: [110518.40356474 112956.5486846  106998.56227015 113590.97575445
+ 107782.52294955 116063.7781669  113279.08892636 111836.81295967
+ 113168.96643781 111945.40954593]
+Mean: 111814.1069260169
+Standard deviation: 2600.8402690892553
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.5s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.3s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   8.1s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.5s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.4s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  50.5s
+[CV] END ................C=127024.42021281396, kernel=linear; total time= 1.0min
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  49.4s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  58.8s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  55.2s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  15.4s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  14.6s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  14.8s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  18.9s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  15.6s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.3s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.5s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  10.8s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  10.0s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.3s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.4s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.2s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   7.8s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.5s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.4s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   8.0s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.3s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.2s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   8.3s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   8.8s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   9.4s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   8.9s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   8.1s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   9.4s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   9.3s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  30.8s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  35.2s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  27.4s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  28.4s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  30.6s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.6s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.7s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.4s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.6s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.2s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  13.9s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  14.5s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  13.1s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  14.1s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  14.2s
+
+Coefficients of the best SVR model:
+num__longitude: -39695.7448
+num__latitude: -37353.5857
+num__housing_median_age: 10395.1389
+num__total_rooms: 1169.6046
+num__total_bedrooms: -4339.5375
+num__population: -44443.0762
+num__households: 52926.5335
+num__median_income: 80338.9221
+num__rooms_per_household: 9153.8710
+num__population_per_household: -137.5609
+num__bedrooms_per_room: 18504.3074
+cat__ocean_proximity_<1H OCEAN: -11767.0411
+cat__ocean_proximity_INLAND: -50893.1512
+cat__ocean_proximity_ISLAND: 87432.0972
+cat__ocean_proximity_NEAR BAY: -19147.4142
+cat__ocean_proximity_NEAR OCEAN: -5624.4908
+
+Best hyperparameters found by Randomized Search:
+{'C': np.float64(127024.42021281396), 'kernel': 'linear'}
+
+Final RMSE on the test set: 68100.19708269964
+95% Confidence Interval for Test RMSE (t-dist): [65699.26961255 70419.31310218]
+
+
+
+==========================================================================================================================
+
+
+
+Coefficients of the train SVR model:
+num__longitude: -39695.7449
+num__latitude: -37353.5856
+num__housing_median_age: 10395.1388
+num__total_rooms: 1169.6045
+num__total_bedrooms: -4339.5361
+num__population: -44443.0761
+num__households: 52926.5322
+num__median_income: 80338.9222
+num__rooms_per_household: 9153.8710
+num__population_per_household: -137.5609
+num__bedrooms_per_room: 18504.3074
+cat__ocean_proximity_<1H OCEAN: -11767.0410
+cat__ocean_proximity_INLAND: -50893.1513
+cat__ocean_proximity_ISLAND: 87432.0973
+cat__ocean_proximity_NEAR BAY: -19147.4141
+cat__ocean_proximity_NEAR OCEAN: -5624.4907
+Model results: SVR(C=127024.42, kernel='linear')
+Model RMSE scores: [72581.41765584 65899.57227708 67154.53220058 70205.80523948
+ 67103.20068807 73912.56881944 77188.08149654 69992.40198854
+ 67526.17372248 70919.54397896]
+Mean: 70248.3298067012
+Standard deviation: 3366.499404748224
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[CV] END .................C=629.7823295913721, kernel=linear; total time=  10.6s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=  12.7s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.3s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=  10.2s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.9s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  53.4s
+[CV] END ................C=127024.42021281396, kernel=linear; total time= 1.1min
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  52.0s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  57.1s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  59.7s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  16.1s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  15.3s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  15.5s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  20.2s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  16.2s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.8s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  12.2s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.4s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.8s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.2s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.0s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.6s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.6s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   8.5s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.9s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.7s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.1s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   8.7s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.6s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.7s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   8.4s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   9.7s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   9.5s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   8.7s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   9.5s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  34.3s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  36.8s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  29.0s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  29.7s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  33.4s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  10.6s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.6s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.8s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  12.2s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.6s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  14.9s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  15.3s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  14.3s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  15.7s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  14.7s
+
+Coefficients of the best SVR model:
+num__longitude: -39695.7448
+num__latitude: -37353.5857
+num__housing_median_age: 10395.1389
+num__total_rooms: 1169.6046
+num__total_bedrooms: -4339.5375
+num__population: -44443.0762
+num__households: 52926.5335
+num__median_income: 80338.9221
+num__rooms_per_household: 9153.8710
+num__population_per_household: -137.5609
+num__bedrooms_per_room: 18504.3074
+cat__ocean_proximity_<1H OCEAN: -11767.0411
+cat__ocean_proximity_INLAND: -50893.1512
+cat__ocean_proximity_ISLAND: 87432.0972
+cat__ocean_proximity_NEAR BAY: -19147.4142
+cat__ocean_proximity_NEAR OCEAN: -5624.4908
+
+Best hyperparameters found by Randomized Search:
+{'C': np.float64(127024.42021281396), 'kernel': 'linear'}
+
+Final RMSE on the test set: 68100.19708269964
+95% Confidence Interval for Test RMSE (t-dist): [65699.26961255 70419.31310218]
+
+
+=======================================================================================================================================================================
+
+Coefficients of the train SVR model:
+num__longitude: -39694.6733
+num__latitude: -37351.7132
+num__housing_median_age: 10394.6766
+num__total_rooms: 1167.3956
+num__total_bedrooms: -4332.1160
+num__population: -44441.8060
+num__households: 52920.3590
+num__median_income: 80339.6437
+num__rooms_per_household: 9154.2155
+num__population_per_household: -137.6058
+num__bedrooms_per_room: 18504.0606
+cat__ocean_proximity_<1H OCEAN: -11767.8038
+cat__ocean_proximity_INLAND: -50894.8016
+cat__ocean_proximity_ISLAND: 87434.5424
+cat__ocean_proximity_NEAR BAY: -19148.3976
+cat__ocean_proximity_NEAR OCEAN: -5623.5394
+Model results: SVR(C=180000, kernel='linear')
+Model RMSE scores: [72615.12215585 65898.59487739 67153.01843175 70205.63534691
+ 67102.89342528 73912.57491928 77187.51081068 69992.3489791
+ 67526.47782108 70919.30109194]
+SVR Cross-Validation Scores:
+Scores: [72615.12215585 65898.59487739 67153.01843175 70205.63534691
+ 67102.89342528 73912.57491928 77187.51081068 69992.3489791
+ 67526.47782108 70919.30109194]
+Mean: 70251.347785925
+Standard deviation: 3368.998165390788
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[CV] END .................C=629.7823295913721, kernel=linear; total time=  10.3s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.9s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.4s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=   9.0s
+[CV] END .................C=629.7823295913721, kernel=linear; total time=  10.0s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  53.4s
+[CV] END ................C=127024.42021281396, kernel=linear; total time= 1.1min
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  52.3s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  56.9s
+[CV] END ................C=127024.42021281396, kernel=linear; total time=  59.4s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  16.1s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  15.4s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  16.0s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  19.5s
+[CV] END ................C=16943.602837639955, kernel=linear; total time=  16.5s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  12.5s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  13.2s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.5s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  12.1s
+[CV] END .................C=4962.081949735625, kernel=linear; total time=  11.7s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   8.5s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=  10.0s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.8s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   9.9s
+[CV] END .................C=84.15977339213268, kernel=linear; total time=   8.5s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.8s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.7s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   8.2s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.8s
+[CV] END .................C=84.14107900575871, kernel=linear; total time=   9.7s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   9.4s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   8.4s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   9.8s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=  10.1s
+[CV] END .................C=34.14793486305622, kernel=linear; total time=   8.5s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  34.0s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  37.6s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  29.3s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  31.0s
+[CV] END ................C=58308.863783075045, kernel=linear; total time=  33.8s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.8s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.9s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.9s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.6s
+[CV] END .................C=5075.631016531331, kernel=linear; total time=  11.4s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  16.7s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  15.4s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  13.6s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  14.6s
+[CV] END ................C=13593.156181516319, kernel=linear; total time=  15.2s
+
+Coefficients of the best SVR model:
+num__longitude: -39695.7448
+num__latitude: -37353.5857
+num__housing_median_age: 10395.1389
+num__total_rooms: 1169.6046
+num__total_bedrooms: -4339.5375
+num__population: -44443.0762
+num__households: 52926.5335
+num__median_income: 80338.9221
+num__rooms_per_household: 9153.8710
+num__population_per_household: -137.5609
+num__bedrooms_per_room: 18504.3074
+cat__ocean_proximity_<1H OCEAN: -11767.0411
+cat__ocean_proximity_INLAND: -50893.1512
+cat__ocean_proximity_ISLAND: 87432.0972
+cat__ocean_proximity_NEAR BAY: -19147.4142
+cat__ocean_proximity_NEAR OCEAN: -5624.4908
+
+Best hyperparameters found by Randomized Search:
+{'C': np.float64(127024.42021281396), 'kernel': 'linear'}
+
+Final RMSE on the test set: 68100.19708269964
+95% Confidence Interval for Test RMSE (t-dist): [65699.26961255 70419.31310218]
