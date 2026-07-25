@@ -271,3 +271,5 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+"Manual 1"
+"Manual 2"
