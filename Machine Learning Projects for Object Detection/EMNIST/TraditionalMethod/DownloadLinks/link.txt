@@ -1,0 +1,9 @@
+
+
+emnist_split_data:
+google drive: https://drive.google.com/file/d/1KOouk7HwWsVdSokr1RC3wzpBbUNj9rzh/view?usp=drive_link
+
+emnist_split_data_maks:
+https://drive.google.com/file/d/14Rq996bnup0s-kesmWj3mIMHlRGnNrIk/view?usp=drive_link
+
+colab: https://colab.research.google.com/drive/1aLNHWQVq8UiqR63IqaX_YQpD8NjcIf7E#scrollTo=qE_Nt9yr0Kwz
