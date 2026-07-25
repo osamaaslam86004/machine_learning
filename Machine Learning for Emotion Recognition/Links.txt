@@ -1,0 +1,6 @@
+
+Kaggle: https://www.kaggle.com/code/shivamburnwal/speech-emotion-recognition
+
+Github: https://github.com/tuncayka/speech_emotion/blob/master/ravdess_emotion_prediction.ipynb
+
+google colab: https://colab.research.google.com/drive/1_v2j5T61YolRrXju8aqB7ZVH522B3PHE#scrollTo=45cddf1bs

@@ -1,0 +1,11 @@
+Spectral contrast features in speech processing are typically calculated by splitting the audio spectrum into sub-bands and determining the difference between spectral peaks (high energy) and valleys (low energy) within each band, often resulting in seven feature dimensions (e.g., 6 sub-bands plus 1 aggregate for the entire spectrum). These features help distinguish between sound peaks and valleys. 
+Key Aspects of Spectral Contrast Features:
+Purpose: They represent the relative energy distribution, emphasizing the contrast between harmonic components (peaks) and non-harmonic components (valleys), often providing better discrimination than simple amplitude measures.
+Common Sub-bands: Features are typically extracted from six frequency bands based on the octave scale, often covering ranges up to the Nyquist frequency.
+Applications: Widely used in speech emotion recognition, music information retrieval, and audio classification to improve performance.
+Comparison with other Spectral Features: Unlike MFCCs (Mel Frequency Cepstral Coefficients), which focus on spectral envelope modeling, spectral contrast specifically measures the difference in amplitude (dB) between peaks and valleys of spectral energy.
+Calculation: They are computed by estimating the difference between peak (maximum energy) and valley (minimum energy) values within each sub-band. 
+
+Journal of Neuroscience
+ +4
+While seven dimensions are common (one contrast value for each of the 6 sub-bands plus the full spectrum), the exact number can be adjusted depending on the specific implementation, such as the number of frequency bands or sub-bands selected for a given application. 

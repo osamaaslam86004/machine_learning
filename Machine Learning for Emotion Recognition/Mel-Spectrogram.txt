@@ -1,0 +1,21 @@
+Mel-Spectrogram features in speech audio usually consist of 80 or 128 mel frequency bands (or "bins") arranged vertically, representing frequency, while the horizontal axis represents time frames. The specific number of bands is a hyperparameter chosen based on the task, typically ranging from 50 to 130 to balance spectral resolution with computational efficiency, according to a Medium article. 
+This video explains how Mel spectrograms are created and why they are used:
+Related video thumbnail
+30:31
+Mel Spectrograms Explained Easily
+
+
+Valerio Velardo - The Sound of AI
+YouTube• 14-Sept-2020
+Common Configuration: 80-dimensional mel-spectrograms are frequently used in speech synthesis and recognition, such as with a 2048-sample window and 512-sample hop length, as detailed in research from arXiv.
+Structure: They transform linear frequency (Hz) into the non-linear Mel scale to mimic human auditory perception, creating a 2D image-like representation.
+Dimensions: A single mel-spectrogram frame consists of 
+ mel bands, resulting in a matrix of size 
+
+, where 
+ is the number of filters (e.g., 80) and 
+ is the number of time frames. 
+
+YouTube
+·Herman Kamper
+ +4
